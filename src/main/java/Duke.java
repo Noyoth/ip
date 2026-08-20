@@ -58,6 +58,22 @@ public class Duke {
                         System.out.println("  [" + tasks[indexOfTask].getTaskIcon() + "][" + tasks[indexOfTask].getStatusIcon() + "] " + tasks[indexOfTask]);
                         System.out.println("____________________________________________________________");
                         continue;
+                    case "delete":
+                        if (inputParts.length < 2) throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        indexOfTask = Integer.parseInt(inputParts[1]) - 1;
+                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) throw new DukeException("OOPS!!! The task number is invalid.");
+                        Task removedTask = tasks[indexOfTask];
+                        for (int i = indexOfTask; i < numOfTasks - 1; i++) {
+                            tasks[i] = tasks[i + 1];
+                        }
+                        tasks[numOfTasks - 1] = null;
+                        numOfTasks--;
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println("  [" + removedTask.getTaskIcon() + "][" + removedTask.getStatusIcon() + "] " + removedTask);
+                        System.out.println("Now you have " + numOfTasks + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
+                        continue;
                     case "todo":
                         if (input.trim().equals("todo")) {
                             throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
