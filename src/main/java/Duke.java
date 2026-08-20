@@ -29,7 +29,7 @@ public class Duke {
                 case "list":
                     System.out.println("____________________________________________________________");
                     for (int i = 0; i < numOfTasks; i++) {
-                        System.out.println(i + 1 + ". " + tasks[i]);
+                        System.out.println(i + 1 + ". [" + tasks[i].getStatusIcon() + "] " + tasks[i]);
                     }
                     System.out.println("____________________________________________________________");
                     continue;
