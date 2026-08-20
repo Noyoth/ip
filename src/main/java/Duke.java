@@ -17,16 +17,24 @@ public class Duke {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
+            String[] tasks = new String[100];
 
-            if (input.equals("bye")) {
-                System.out.println("____________________________________________________________");
-                System.out.println("Bye bye.");
-                System.out.println("____________________________________________________________");
-                break;
-            } else {
-                System.out.println("____________________________________________________________");
-                System.out.println(input);
-                System.out.println("____________________________________________________________");
+            switch (input) {
+                case "bye":
+                    System.out.println("____________________________________________________________");
+                    System.out.println("Bye bye.");
+                    System.out.println("____________________________________________________________");
+                    break;
+                case "list":
+                    System.out.println("____________________________________________________________");
+                    for (int i = 1; i <= tasks.length; i++) {
+                        System.out.println(1 + ". " + tasks[i - 1]);
+                    }
+                    System.out.println("____________________________________________________________");
+                default:
+                    System.out.println("____________________________________________________________");
+                    System.out.println(input);
+                    System.out.println("____________________________________________________________");
             }
         }
     }
