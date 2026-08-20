@@ -20,4 +20,9 @@ public class Task {
         this.isDone = false;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
