@@ -3,6 +3,7 @@ public class ToDo extends Task{
         super(name);
     }
 
+    @Override
     public String getTaskIcon() {
         return "T";
     }

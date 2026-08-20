@@ -6,6 +6,7 @@ public class Deadline extends Task{
         this.deadline = deadline;
     }
 
+    @Override
     public String getTaskIcon() {
         return "D";
     }
