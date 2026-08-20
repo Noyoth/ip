@@ -17,9 +17,17 @@ public class Duke {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
-            System.out.println("____________________________________________________________");
-            System.out.println(input);
-            System.out.println("____________________________________________________________");
+
+            if (input.equals("bye")) {
+                System.out.println("____________________________________________________________");
+                System.out.println("Bye bye.");
+                System.out.println("____________________________________________________________");
+                break;
+            } else {
+                System.out.println("____________________________________________________________");
+                System.out.println(input);
+                System.out.println("____________________________________________________________");
+            }
         }
     }
 }
