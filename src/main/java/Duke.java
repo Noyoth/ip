@@ -15,7 +15,7 @@ public class Duke {
         System.out.println("____________________________________________________________");
 
         Scanner scanner = new Scanner(System.in);
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int numOfTasks = 0;
 
         while (true) {
@@ -34,7 +34,7 @@ public class Duke {
                     System.out.println("____________________________________________________________");
                     continue;
                 default:
-                    tasks[numOfTasks] = input;
+                    tasks[numOfTasks] = new Task(input);
                     numOfTasks++;
                     System.out.println("____________________________________________________________");
                     System.out.println("added: " + input);
