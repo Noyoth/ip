@@ -15,10 +15,11 @@ public class Duke {
         System.out.println("____________________________________________________________");
 
         Scanner scanner = new Scanner(System.in);
+        String[] tasks = new String[100];
+        int numOfTasks = 0;
+
         while (true) {
             String input = scanner.nextLine();
-            String[] tasks = new String[100];
-
             switch (input) {
                 case "bye":
                     System.out.println("____________________________________________________________");
@@ -27,13 +28,16 @@ public class Duke {
                     break;
                 case "list":
                     System.out.println("____________________________________________________________");
-                    for (int i = 1; i <= tasks.length; i++) {
-                        System.out.println(1 + ". " + tasks[i - 1]);
+                    for (int i = 0; i < numOfTasks; i++) {
+                        System.out.println(i + 1 + ". " + tasks[i]);
                     }
                     System.out.println("____________________________________________________________");
+                    continue;
                 default:
+                    tasks[numOfTasks] = input;
+                    numOfTasks++;
                     System.out.println("____________________________________________________________");
-                    System.out.println(input);
+                    System.out.println("added: " + input);
                     System.out.println("____________________________________________________________");
             }
         }
