@@ -2,13 +2,7 @@ import java.util.Scanner;
 
 public class Duke {
     public static void main(String[] args) {
-        String banner = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
         String chatbotName = "TBC";
-        System.out.println(banner);
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm " + chatbotName + ".");
         System.out.println("What can I do for you?");
@@ -19,7 +13,7 @@ public class Duke {
         int numOfTasks = 0;
 
         while (true) {
-                        String input = scanner.nextLine();
+            String input = scanner.nextLine();
             String[] inputParts = input.split(" ");
             String command = inputParts[0];
             int indexOfTask;
