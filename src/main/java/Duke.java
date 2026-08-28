@@ -30,7 +30,6 @@ public class Duke {
                 continue;
             }
             
-            // split by one or more spaces
             String[] inputParts = input.split("\\s+");
             String command = inputParts[0];
             int indexOfTask;
@@ -218,37 +217,36 @@ public class Duke {
                     break;
                 }
                 String line = fileScanner.nextLine();
-                String[] parts = line.split("\\s*\\|\\s*");
-                if (parts.length < 3) {
-                    continue;
-                }
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
-                String name = parts[2];
-
-                Task task = null;
-                if (type.equals("T")) {
-                    task = new ToDo(name);
-                } else if (type.equals("D") && parts.length >= 4) {
-                    task = new Deadline(name, parts[3]);
-                } else if (type.equals("E") && parts.length >= 4) {
-                    String[] timeParts = parts[3].split("-", 2);
-                    if (timeParts.length >= 2) {
-                        task = new Event(name, timeParts[0], timeParts[1]);
+                try {
+                    String[] parts = line.split("\\s*\\|\\s*");
+                    if (parts.length < 3) {
+                        continue;
                     }
-                }
+                    String type = parts[0];
+                    boolean isDone = parts[1].equals("1");
+                    String name = parts[2];
 
-                if (task != null) {
-                    if (isDone) {
-                        task.markAsDone();
+                    Task task = null;
+                    if (type.equals("T")) {
+                        task = new ToDo(name);
+                    } else if (type.equals("D") && parts.length >= 4) {
+                        task = new Deadline(name, parts[3]);
+                    } else if (type.equals("E") && parts.length >= 5) {
+                        task = new Event(name, parts[3], parts[4]);
                     }
-                    tasks[loadedCount] = task;
-                    loadedCount++;
+
+                    if (task != null) {
+                        if (isDone) {
+                            task.markAsDone();
+                        }
+                        tasks[loadedCount] = task;
+                        loadedCount++;
+                    }
+                } catch (Exception ex) {
                 }
             }
             fileScanner.close();
         } catch (FileNotFoundException e) {
-            // Do nothing if file is not found
         } catch (Exception e) {
             System.out.println("Error while loading tasks: " + e.getMessage());
         }
