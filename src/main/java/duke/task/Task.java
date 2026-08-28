@@ -4,7 +4,7 @@ package duke.task;
  * Represents a generic task with a name and completion status.
  */
 public class Task {
-    private String name;
+    private final String name;
     private boolean isDone;
 
     /**
@@ -46,22 +46,16 @@ public class Task {
 
     /**
      * Marks the task as done.
-     *
-     * @return The task itself.
      */
-    public Task markAsDone() {
+    public void markAsDone() {
         this.isDone = true;
-        return this;
     }
 
     /**
      * Marks the task as not done.
-     *
-     * @return The task itself.
      */
-    public Task markAsNotDone() {
+    public void markAsNotDone() {
         this.isDone = false;
-        return this;
     }
 
     @Override
