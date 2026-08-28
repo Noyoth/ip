@@ -26,7 +26,8 @@ public class Deadline extends Task {
                 return LocalDate.parse(input).atStartOfDay();
             }
         } catch (DateTimeParseException e) {
-            throw new DukeException("Invalid date format. Please use yyyy-MM-dd or yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
+            throw new DukeException(
+                    "Invalid date format. Please use yyyy-MM-dd or yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
         }
     }
 

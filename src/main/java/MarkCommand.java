@@ -1,0 +1,18 @@
+/**
+ * Represents a command to mark a task as completed.
+ */
+public class MarkCommand extends Command {
+    private final int targetIndex;
+
+    public MarkCommand(int targetIndex) {
+        this.targetIndex = targetIndex;
+    }
+
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {
+        Task task = tasks.getTask(targetIndex);
+        task.markAsDone();
+        storage.save(tasks);
+        ui.showTaskMarked(task);
+    }
+}
