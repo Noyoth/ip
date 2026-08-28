@@ -38,3 +38,9 @@ Do not commit or push unless explicitly asked.
 ## Code Style
 
 Ensure that all code complies with the [SE-EDU Java Coding Standard](https://se-education.org/guides/conventions/java/index.html).
+
+## Testing and Test Coverage
+
+* Maintain a test coverage target of ~50% focused on the highest-value methods (prioritizing complex, core, or critical business logic).
+* JUnit tests MUST be updated/added after each code change to comply with this coverage target.
+* Follow Gradle and JUnit naming and placement conventions (e.g. `featureUnderTest_testScenario_expectedBehavior()`).
