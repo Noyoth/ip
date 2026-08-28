@@ -31,6 +31,7 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
+You MUST suggest a commit message every time after you make any changes to the codebase.
 When proposing or creating a commit message, ensure it complies with the Conventional Commits format, keeping it short and simple.
 Do not commit or push unless explicitly asked.
 
