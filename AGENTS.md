@@ -42,7 +42,8 @@ Do not commit or push unless explicitly asked.
   2. Switch to `master`: `git checkout master`.
   3. Ensure `master` is synchronized with remote: `git pull origin master`.
   4. Perform an explicit non-fast-forward merge: `git merge --no-ff <branch-name> -m "chore: Merge <branch-name> into master"`.
-  5. Verify tests and build pass on `master` before pushing (`./gradlew test && ./gradlew build`).
+  5. Tag the merge commit with the increment tag (e.g. `git tag <tag-name>`).
+  6. Verify tests and build pass on `master` before pushing (`./gradlew test && ./gradlew build`).
 
 ## Code Style
 
