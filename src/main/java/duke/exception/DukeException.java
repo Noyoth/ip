@@ -1,9 +1,12 @@
 package duke.exception;
 
+import java.io.Serial;
+
 /**
  * Represents an exception specific to the Duke application.
  */
 public class DukeException extends Exception {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
