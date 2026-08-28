@@ -17,8 +17,13 @@ public class Duke {
         int numOfTasks = loadTasks(tasks);
 
         while (true) {
-            String input = scanner.nextLine();
-            String[] inputParts = input.split(" ");
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                continue;
+            }
+            
+            // split by one or more spaces
+            String[] inputParts = input.split("\\s+");
             String command = inputParts[0];
             int indexOfTask;
 
@@ -32,7 +37,7 @@ public class Duke {
                     case "list":
                         System.out.println("____________________________________________________________");
                         for (int i = 0; i < numOfTasks; i++) {
-                            System.out.println(i + 1 + ". [" + tasks[i].getTaskIcon() + "][" + tasks[i].getStatusIcon() + "] " + tasks[i]);
+                            System.out.println((i + 1) + ". [" + tasks[i].getTaskIcon() + "][" + tasks[i].getStatusIcon() + "] " + tasks[i]);
                         }
                         System.out.println("____________________________________________________________");
                         continue;
@@ -76,10 +81,11 @@ public class Duke {
                         System.out.println("____________________________________________________________");
                         continue;
                     case "todo":
-                        if (input.trim().equals("todo")) {
+                        if (inputParts.length < 2) {
                             throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
                         }
-                        String todoName = input.substring(5).trim();
+                        if (numOfTasks >= tasks.length) throw new DukeException("OOPS!!! The task list is full.");
+                        String todoName = input.substring(command.length()).trim();
                         tasks[numOfTasks] = new ToDo(todoName);
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
@@ -90,12 +96,15 @@ public class Duke {
                         System.out.println("____________________________________________________________");
                         continue;
                     case "deadline":
-                        if (input.trim().equals("deadline")) {
+                        if (inputParts.length < 2) {
                             throw new DukeException("OOPS!!! The description of a deadline cannot be empty.");
                         }
-                        String deadlineInput = input.substring(9).trim();
+                        if (numOfTasks >= tasks.length) throw new DukeException("OOPS!!! The task list is full.");
+                        String deadlineInput = input.substring(command.length()).trim();
                         String[] deadlineParts = deadlineInput.split(" /by ");
-                        if (deadlineParts.length < 2) throw new DukeException("OOPS!!! The /by time of a deadline cannot be empty.");
+                        if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
+                            throw new DukeException("OOPS!!! The description and /by time of a deadline cannot be empty.");
+                        }
                         tasks[numOfTasks] = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
@@ -106,14 +115,19 @@ public class Duke {
                         System.out.println("____________________________________________________________");
                         continue;
                     case "event":
-                        if (input.trim().equals("event")) {
+                        if (inputParts.length < 2) {
                             throw new DukeException("OOPS!!! The description of an event cannot be empty.");
                         }
-                        String eventInput = input.substring(6).trim();
+                        if (numOfTasks >= tasks.length) throw new DukeException("OOPS!!! The task list is full.");
+                        String eventInput = input.substring(command.length()).trim();
                         String[] eventParts = eventInput.split(" /from ");
-                        if (eventParts.length < 2) throw new DukeException("OOPS!!! The /from time of an event cannot be empty.");
-                        String[] timeParts = eventParts[1].trim().split(" /to ");
-                        if (timeParts.length < 2) throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
+                        if (eventParts.length < 2 || eventParts[0].trim().isEmpty()) {
+                            throw new DukeException("OOPS!!! The description and /from time of an event cannot be empty.");
+                        }
+                        String[] timeParts = eventParts[1].split(" /to ");
+                        if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
+                            throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
+                        }
                         tasks[numOfTasks] = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
@@ -134,6 +148,10 @@ public class Duke {
                 System.out.println("____________________________________________________________");
                 System.out.println("OOPS!!! The task number provided is invalid.");
                 System.out.println("____________________________________________________________");
+            } catch (Exception e) {
+                System.out.println("____________________________________________________________");
+                System.out.println("OOPS!!! An unexpected error occurred: " + e.getMessage());
+                System.out.println("____________________________________________________________");
             }
         }
     }
@@ -153,6 +171,10 @@ public class Duke {
             }
             Scanner fileScanner = new Scanner(file);
             while (fileScanner.hasNextLine()) {
+                if (loadedCount >= tasks.length) {
+                    System.out.println("Warning: Task list is full. Some tasks were not loaded.");
+                    break;
+                }
                 String line = fileScanner.nextLine();
                 String[] parts = line.split("\\s*\\|\\s*");
                 if (parts.length < 3) {
@@ -184,7 +206,9 @@ public class Duke {
             }
             fileScanner.close();
         } catch (FileNotFoundException e) {
-
+            // Do nothing if file is not found
+        } catch (Exception e) {
+            System.out.println("Error while loading tasks: " + e.getMessage());
         }
         return loadedCount;
     }
@@ -209,7 +233,9 @@ public class Duke {
             writer.close();
         } catch (IOException e) {
             System.out.println("An error occurred while saving tasks.");
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred while saving tasks.");
         }
     }
-
 }
+
