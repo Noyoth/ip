@@ -13,6 +13,7 @@ public class ExitCommand extends Command {
      */
     public ExitCommand() {
     }
+
     /**
      * Executes the exit command by printing the farewell message.
      *

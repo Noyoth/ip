@@ -21,6 +21,7 @@ public class Parser {
      */
     private Parser() {
     }
+
     /**
      * Parses the user's full input string and returns the corresponding Command.
      *

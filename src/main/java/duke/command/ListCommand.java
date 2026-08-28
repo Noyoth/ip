@@ -13,6 +13,7 @@ public class ListCommand extends Command {
      */
     public ListCommand() {
     }
+
     /**
      * Executes the list command by displaying all tasks to the user.
      *
