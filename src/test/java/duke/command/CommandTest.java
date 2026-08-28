@@ -89,4 +89,13 @@ public class CommandTest {
         command.execute(tasks, ui, storage);
         assertTrue(command.isExit());
     }
+
+    @Test
+    public void findCommand_execute_success() throws DukeException {
+        Task todo = new ToDo("read book");
+        tasks.addTask(todo);
+        Command command = new FindCommand("book");
+        command.execute(tasks, ui, storage);
+        assertFalse(command.isExit());
+    }
 }

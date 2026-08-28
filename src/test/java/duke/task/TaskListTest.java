@@ -78,4 +78,23 @@ public class TaskListTest {
         TaskList list = new TaskList(initialList);
         assertEquals(1, list.size());
     }
+
+    @Test
+    public void findTasks_matchingKeyword_returnsMatchingTasks() throws DukeException {
+        taskList.addTask(todo); // "read book"
+        taskList.addTask(deadline); // "submit assignment"
+        taskList.addTask(new ToDo("return book"));
+
+        TaskList found = taskList.findTasks("book");
+        assertEquals(2, found.size());
+        assertEquals("read book", found.getTask(0).toString());
+        assertEquals("return book", found.getTask(1).toString());
+    }
+
+    @Test
+    public void findTasks_noMatch_returnsEmptyList() {
+        taskList.addTask(todo);
+        TaskList found = taskList.findTasks("nonexistent");
+        assertEquals(0, found.size());
+    }
 }

@@ -4,6 +4,7 @@ import duke.command.AddCommand;
 import duke.command.Command;
 import duke.command.DeleteCommand;
 import duke.command.ExitCommand;
+import duke.command.FindCommand;
 import duke.command.ListCommand;
 import duke.command.MarkCommand;
 import duke.command.UnmarkCommand;
@@ -103,6 +104,12 @@ public class Parser {
                 throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
             }
             return new AddCommand(new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
+        case "find":
+            if (parts.length < 2) {
+                throw new DukeException("OOPS!!! The search keyword cannot be empty.");
+            }
+            String keyword = trimmed.substring(commandWord.length()).trim();
+            return new FindCommand(keyword);
         default:
             throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
