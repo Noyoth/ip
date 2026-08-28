@@ -21,6 +21,14 @@ public class AddCommand extends Command {
         this.task = task;
     }
 
+    /**
+     * Executes the add command by adding the task to the task list, saving it, and notifying the user.
+     *
+     * @param tasks   The task list.
+     * @param ui      The user interface.
+     * @param storage The storage handler.
+     * @throws DukeException If saving tasks fails.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {
         tasks.addTask(task);

@@ -58,6 +58,11 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Returns the description of the task.
+     *
+     * @return The task description string.
+     */
     @Override
     public String toString() {
         return this.name;

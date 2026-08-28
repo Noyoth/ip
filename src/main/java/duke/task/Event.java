@@ -31,6 +31,13 @@ public class Event extends Task {
         this.endDate = parseDateTime(endTime);
     }
 
+    /**
+     * Parses the date string into a LocalDateTime object.
+     *
+     * @param input The raw date string.
+     * @return The parsed LocalDateTime.
+     * @throws DukeException If the date cannot be parsed.
+     */
     private LocalDateTime parseDateTime(String input) throws DukeException {
         try {
             if (input.contains("T")) {
@@ -56,11 +63,21 @@ public class Event extends Task {
         return super.toFileFormat() + " | " + startDate + " | " + endDate;
     }
 
+    /**
+     * Returns the task type icon for an event.
+     *
+     * @return The string "E".
+     */
     @Override
     public String getTaskIcon() {
         return "E";
     }
 
+    /**
+     * Returns a string representation of the event task.
+     *
+     * @return The formatted event task string.
+     */
     @Override
     public String toString() {
         return super.toString() + " (from: " + startDate.format(OUTPUT_FORMAT)

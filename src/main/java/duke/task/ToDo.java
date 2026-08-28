@@ -13,6 +13,11 @@ public class ToDo extends Task {
         super(name);
     }
 
+    /**
+     * Returns the task type icon for a to-do.
+     *
+     * @return The string "T".
+     */
     @Override
     public String getTaskIcon() {
         return "T";
