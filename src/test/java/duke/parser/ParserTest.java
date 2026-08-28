@@ -11,6 +11,7 @@ import duke.command.AddCommand;
 import duke.command.Command;
 import duke.command.DeleteCommand;
 import duke.command.ExitCommand;
+import duke.command.FindCommand;
 import duke.command.ListCommand;
 import duke.command.MarkCommand;
 import duke.command.UnmarkCommand;
@@ -105,6 +106,18 @@ public class ParserTest {
     public void parse_validDeleteCommand_returnsDeleteCommand() throws DukeException {
         Command command = Parser.parse("delete 1");
         assertInstanceOf(DeleteCommand.class, command);
+    }
+
+    @Test
+    public void parse_validFindCommand_returnsFindCommand() throws DukeException {
+        Command command = Parser.parse("find book");
+        assertInstanceOf(FindCommand.class, command);
+    }
+
+    @Test
+    public void parse_emptyFindKeyword_exceptionThrown() {
+        DukeException exception = assertThrows(DukeException.class, () -> Parser.parse("find"));
+        assertEquals("OOPS!!! The search keyword cannot be empty.", exception.getMessage());
     }
 
     @Test

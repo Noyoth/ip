@@ -130,4 +130,22 @@ public class Ui {
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println("  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task);
     }
+
+    /**
+     * Displays the list of tasks matching a search keyword.
+     *
+     * @param matchingTasks The TaskList containing matched tasks.
+     */
+    public void showFoundTasks(TaskList matchingTasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            try {
+                Task t = matchingTasks.getTask(i);
+                System.out.println((i + 1) + ". [" + t.getTaskIcon() + "]["
+                        + t.getStatusIcon() + "] " + t);
+            } catch (DukeException e) {
+                showError(e.getMessage());
+            }
+        }
+    }
 }
