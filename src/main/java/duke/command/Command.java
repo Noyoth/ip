@@ -14,6 +14,7 @@ public abstract class Command {
      */
     public Command() {
     }
+
     /**
      * Executes the command with the provided TaskList, Ui, and Storage.
      *
