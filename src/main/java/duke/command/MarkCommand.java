@@ -21,6 +21,14 @@ public class MarkCommand extends Command {
         this.targetIndex = targetIndex;
     }
 
+    /**
+     * Executes the mark command by marking the task as done, saving changes, and notifying the user.
+     *
+     * @param tasks   The task list.
+     * @param ui      The user interface.
+     * @param storage The storage handler.
+     * @throws DukeException If the task index is invalid or saving fails.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {
         Task task = tasks.getTask(targetIndex);

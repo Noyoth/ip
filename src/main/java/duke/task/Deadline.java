@@ -28,6 +28,13 @@ public class Deadline extends Task {
         this.deadlineDate = parseDateTime(deadline);
     }
 
+    /**
+     * Parses the date string into a LocalDateTime object.
+     *
+     * @param input The raw date string.
+     * @return The parsed LocalDateTime.
+     * @throws DukeException If the date cannot be parsed.
+     */
     private LocalDateTime parseDateTime(String input) throws DukeException {
         try {
             if (input.contains("T")) {
@@ -53,11 +60,21 @@ public class Deadline extends Task {
         return super.toFileFormat() + " | " + deadlineDate;
     }
 
+    /**
+     * Returns the task type icon for a deadline.
+     *
+     * @return The string "D".
+     */
     @Override
     public String getTaskIcon() {
         return "D";
     }
 
+    /**
+     * Returns a string representation of the deadline task.
+     *
+     * @return The formatted deadline task string.
+     */
     @Override
     public String toString() {
         return super.toString() + " (by: " + deadlineDate.format(OUTPUT_FORMAT) + ")";
