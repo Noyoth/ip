@@ -1,7 +1,19 @@
+package duke.command;
+
+import duke.exception.DukeException;
+import duke.storage.Storage;
+import duke.task.TaskList;
+import duke.ui.Ui;
+
 /**
  * Represents an abstract executable command in the Duke application.
  */
 public abstract class Command {
+    /**
+     * Constructs a Command.
+     */
+    public Command() {
+    }
     /**
      * Executes the command with the provided TaskList, Ui, and Storage.
      *

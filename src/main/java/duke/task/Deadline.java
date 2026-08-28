@@ -1,16 +1,28 @@
+package duke.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import duke.exception.DukeException;
+
 /**
  * Represents a task with a deadline.
  */
 public class Deadline extends Task {
-    private LocalDateTime deadlineDate;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy, h:mm a");
 
+    private LocalDateTime deadlineDate;
+
+    /**
+     * Constructs a Deadline task with the given description and date string.
+     *
+     * @param name     The description of the deadline task.
+     * @param deadline The deadline date/time string (yyyy-MM-dd or yyyy-MM-dd HHmm).
+     * @throws DukeException If the date/time string format is invalid.
+     */
     public Deadline(String name, String deadline) throws DukeException {
         super(name);
         this.deadlineDate = parseDateTime(deadline);

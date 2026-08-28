@@ -1,17 +1,30 @@
+package duke.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import duke.exception.DukeException;
+
 /**
  * Represents an event task with a start and end time.
  */
 public class Event extends Task {
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy, h:mm a");
 
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
+    /**
+     * Constructs an Event task with the given description, start time, and end time.
+     *
+     * @param name      The description of the event task.
+     * @param startTime The start date/time string (yyyy-MM-dd or yyyy-MM-dd HHmm).
+     * @param endTime   The end date/time string (yyyy-MM-dd or yyyy-MM-dd HHmm).
+     * @throws DukeException If any date/time string format is invalid.
+     */
     public Event(String name, String startTime, String endTime) throws DukeException {
         super(name);
         this.startDate = parseDateTime(startTime);

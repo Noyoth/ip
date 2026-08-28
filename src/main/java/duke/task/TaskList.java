@@ -1,4 +1,8 @@
+package duke.task;
+
 import java.util.ArrayList;
+
+import duke.exception.DukeException;
 
 /**
  * Encapsulates the collection of tasks and operations on the task list.
@@ -6,10 +10,18 @@ import java.util.ArrayList;
 public class TaskList {
     private final ArrayList<Task> tasks;
 
+    /**
+     * Constructs an empty TaskList.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Constructs a TaskList initialized with the given list of tasks.
+     *
+     * @param tasks The initial list of tasks.
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }

@@ -1,3 +1,5 @@
+package duke.storage;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -5,12 +7,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import duke.exception.DukeException;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.TaskList;
+import duke.task.ToDo;
+
 /**
  * Handles loading tasks from a file and saving tasks to a file.
  */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage handler configured for the specified file path.
+     *
+     * @param filePath The path to the file used for loading and saving tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }

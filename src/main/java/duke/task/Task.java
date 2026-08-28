@@ -1,3 +1,5 @@
+package duke.task;
+
 /**
  * Represents a generic task with a name and completion status.
  */
@@ -5,6 +7,11 @@ public class Task {
     private String name;
     private boolean isDone;
 
+    /**
+     * Constructs a new Task with the given name.
+     *
+     * @param name The description of the task.
+     */
     public Task(String name) {
         this.name = name;
         this.isDone = false;
@@ -18,7 +25,6 @@ public class Task {
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
-
 
     /**
      * Formats the Task for saving to a file.

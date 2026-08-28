@@ -1,3 +1,12 @@
+package duke;
+
+import duke.command.Command;
+import duke.exception.DukeException;
+import duke.parser.Parser;
+import duke.storage.Storage;
+import duke.task.TaskList;
+import duke.ui.Ui;
+
 /**
  * Represents the main entry point for the Duke chatbot application.
  */
@@ -52,4 +61,3 @@ public class Duke {
         new Duke("./data/duke.txt").run();
     }
 }
-

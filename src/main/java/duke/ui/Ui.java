@@ -1,4 +1,10 @@
+package duke.ui;
+
 import java.util.Scanner;
+
+import duke.exception.DukeException;
+import duke.task.Task;
+import duke.task.TaskList;
 
 /**
  * Handles all user interactions and text output for the Duke application.
@@ -7,6 +13,9 @@ public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
     private final Scanner scanner;
 
+    /**
+     * Constructs a Ui instance initialized with standard console input.
+     */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
