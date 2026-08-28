@@ -70,7 +70,7 @@ public class Storage {
                         loadedTasks.add(task);
                     }
                 } catch (Exception ex) {
-                    continue;
+                    // Skip corrupt or unparseable line
                 }
             }
         } catch (FileNotFoundException e) {
@@ -101,8 +101,8 @@ public class Storage {
         try {
             File file = new File(filePath);
             File parentDir = file.getParentFile();
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
+            if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
+                throw new DukeException("Failed to create directory: " + parentDir.getAbsolutePath());
             }
             try (FileWriter writer = new FileWriter(file)) {
                 for (Task task : tasks) {
