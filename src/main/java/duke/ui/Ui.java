@@ -70,15 +70,6 @@ public class Ui {
     }
 
     /**
-     * Prints a general message.
-     *
-     * @param message The message to display.
-     */
-    public void showMessage(String message) {
-        System.out.println(message);
-    }
-
-    /**
      * Displays all tasks currently in the task list.
      *
      * @param tasks The TaskList containing tasks to display.
