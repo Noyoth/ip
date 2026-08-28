@@ -17,6 +17,11 @@ import duke.task.ToDo;
  */
 public class Parser {
     /**
+     * Prevents instantiation of this utility class.
+     */
+    private Parser() {
+    }
+    /**
      * Parses the user's full input string and returns the corresponding Command.
      *
      * @param fullCommand The raw input string from the user.
