@@ -4,9 +4,7 @@
 public class ExitCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showLine();
         ui.showGoodbye();
-        ui.showLine();
     }
 
     @Override

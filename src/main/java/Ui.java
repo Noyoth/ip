@@ -68,4 +68,66 @@ public class Ui {
     public void showMessage(String message) {
         System.out.println(message);
     }
+
+    /**
+     * Displays all tasks currently in the task list.
+     *
+     * @param tasks The TaskList containing tasks to display.
+     */
+    public void showTaskList(TaskList tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            try {
+                Task t = tasks.getTask(i);
+                System.out.println((i + 1) + ". [" + t.getTaskIcon() + "]["
+                        + t.getStatusIcon() + "] " + t);
+            } catch (DukeException e) {
+                showError(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Displays confirmation that a task has been added.
+     *
+     * @param task       The added task.
+     * @param totalTasks The new total count of tasks.
+     */
+    public void showTaskAdded(Task task, int totalTasks) {
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task);
+        System.out.println("Now you have " + totalTasks + " tasks in the list.");
+    }
+
+    /**
+     * Displays confirmation that a task has been removed.
+     *
+     * @param task       The removed task.
+     * @param totalTasks The new total count of tasks.
+     */
+    public void showTaskDeleted(Task task, int totalTasks) {
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("  [" + task.getTaskIcon() + "]["
+                + task.getStatusIcon() + "] " + task);
+        System.out.println("Now you have " + totalTasks + " tasks in the list.");
+    }
+
+    /**
+     * Displays confirmation that a task has been marked as done.
+     *
+     * @param task The marked task.
+     */
+    public void showTaskMarked(Task task) {
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task);
+    }
+
+    /**
+     * Displays confirmation that a task has been marked as not done.
+     *
+     * @param task The unmarked task.
+     */
+    public void showTaskUnmarked(Task task) {
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println("  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task);
+    }
 }

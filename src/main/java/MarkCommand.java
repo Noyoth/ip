@@ -13,9 +13,6 @@ public class MarkCommand extends Command {
         Task task = tasks.getTask(targetIndex);
         task.markAsDone();
         storage.save(tasks);
-        ui.showLine();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task);
-        ui.showLine();
+        ui.showTaskMarked(task);
     }
 }

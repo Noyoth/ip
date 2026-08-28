@@ -31,19 +31,13 @@ public class Duke {
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
-                if (fullCommand.isEmpty()) {
-                    continue;
-                }
+                ui.showLine();
                 Command c = Parser.parse(fullCommand);
                 c.execute(tasks, ui, storage);
                 isExit = c.isExit();
             } catch (DukeException e) {
-                ui.showLine();
                 ui.showError(e.getMessage());
-                ui.showLine();
-            } catch (Exception e) {
-                ui.showLine();
-                ui.showError("OOPS!!! An unexpected error occurred: " + e.getMessage());
+            } finally {
                 ui.showLine();
             }
         }
