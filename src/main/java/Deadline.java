@@ -1,4 +1,7 @@
-public class Deadline extends Task{
+/**
+ * Represents a task with a deadline.
+ */
+public class Deadline extends Task {
     private String deadline;
 
     public Deadline(String name, String deadline) {
@@ -6,13 +9,12 @@ public class Deadline extends Task{
         this.deadline = deadline;
     }
 
-    @Override
-
     /**
      * Formats the Deadline for saving to a file.
      *
      * @return A pipe-separated string representing the Deadline's state.
      */
+    @Override
     public String toFileFormat() {
         return super.toFileFormat() + " | " + deadline;
     }

@@ -1,4 +1,7 @@
-public class ToDo extends Task{
+/**
+ * Represents a to-do task.
+ */
+public class ToDo extends Task {
     public ToDo(String name) {
         super(name);
     }

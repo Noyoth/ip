@@ -1,4 +1,7 @@
-public class Event extends Task{
+/**
+ * Represents an event task with a start and end time.
+ */
+public class Event extends Task {
     private String startTime;
     private String endTime;
 
@@ -8,13 +11,12 @@ public class Event extends Task{
         this.endTime = endTime;
     }
 
-    @Override
-
     /**
      * Formats the Event for saving to a file.
      *
      * @return A pipe-separated string representing the Event's state.
      */
+    @Override
     public String toFileFormat() {
         return super.toFileFormat() + " | " + startTime + "-" + endTime;
     }

@@ -4,7 +4,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
+/**
+ * Represents the main entry point for the Duke chatbot application.
+ */
 public class Duke {
+    /**
+     * The main entry point for the Duke application.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         String chatbotName = "TBC";
         System.out.println("____________________________________________________________");
@@ -26,6 +34,7 @@ public class Duke {
             String[] inputParts = input.split("\\s+");
             String command = inputParts[0];
             int indexOfTask;
+            Task currentTask;
 
             try {
                 switch (command) {
@@ -37,36 +46,53 @@ public class Duke {
                     case "list":
                         System.out.println("____________________________________________________________");
                         for (int i = 0; i < numOfTasks; i++) {
-                            System.out.println((i + 1) + ". [" + tasks[i].getTaskIcon() + "][" + tasks[i].getStatusIcon() + "] " + tasks[i]);
+                            System.out.println((i + 1) + ". [" + tasks[i].getTaskIcon() + "]["
+                                    + tasks[i].getStatusIcon() + "] " + tasks[i]);
                         }
                         System.out.println("____________________________________________________________");
                         continue;
                     case "mark":
-                        if (inputParts.length < 2) throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        if (inputParts.length < 2) {
+                            throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        }
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
-                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) throw new DukeException("OOPS!!! The task number is invalid.");
+                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) {
+                            throw new DukeException("OOPS!!! The task number is invalid.");
+                        }
                         tasks[indexOfTask].markAsDone();
                         saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Nice! I've marked this task as done:");
-                        System.out.println("  [" + tasks[indexOfTask].getTaskIcon() + "][" + tasks[indexOfTask].getStatusIcon() + "] " + tasks[indexOfTask]);
+                        currentTask = tasks[indexOfTask];
+                        System.out.println("  [" + currentTask.getTaskIcon() + "]["
+                                + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("____________________________________________________________");
                         continue;
                     case "unmark":
-                        if (inputParts.length < 2) throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        if (inputParts.length < 2) {
+                            throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        }
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
-                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) throw new DukeException("OOPS!!! The task number is invalid.");
+                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) {
+                            throw new DukeException("OOPS!!! The task number is invalid.");
+                        }
                         tasks[indexOfTask].markAsNotDone();
                         saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  [" + tasks[indexOfTask].getTaskIcon() + "][" + tasks[indexOfTask].getStatusIcon() + "] " + tasks[indexOfTask]);
+                        currentTask = tasks[indexOfTask];
+                        System.out.println("  [" + currentTask.getTaskIcon() + "]["
+                                + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("____________________________________________________________");
                         continue;
                     case "delete":
-                        if (inputParts.length < 2) throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        if (inputParts.length < 2) {
+                            throw new DukeException("OOPS!!! The task number cannot be empty.");
+                        }
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
-                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) throw new DukeException("OOPS!!! The task number is invalid.");
+                        if (indexOfTask < 0 || indexOfTask >= numOfTasks) {
+                            throw new DukeException("OOPS!!! The task number is invalid.");
+                        }
                         Task removedTask = tasks[indexOfTask];
                         for (int i = indexOfTask; i < numOfTasks - 1; i++) {
                             tasks[i] = tasks[i + 1];
@@ -76,7 +102,8 @@ public class Duke {
                         saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Noted. I've removed this task:");
-                        System.out.println("  [" + removedTask.getTaskIcon() + "][" + removedTask.getStatusIcon() + "] " + removedTask);
+                        System.out.println("  [" + removedTask.getTaskIcon() + "]["
+                                + removedTask.getStatusIcon() + "] " + removedTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
                         System.out.println("____________________________________________________________");
                         continue;
@@ -84,14 +111,18 @@ public class Duke {
                         if (inputParts.length < 2) {
                             throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
                         }
-                        if (numOfTasks >= tasks.length) throw new DukeException("OOPS!!! The task list is full.");
+                        if (numOfTasks >= tasks.length) {
+                            throw new DukeException("OOPS!!! The task list is full.");
+                        }
                         String todoName = input.substring(command.length()).trim();
                         tasks[numOfTasks] = new ToDo(todoName);
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Got it. I've added this task:");
-                        System.out.println("  [" + tasks[numOfTasks - 1].getTaskIcon() + "][" + tasks[numOfTasks - 1].getStatusIcon() + "] " + tasks[numOfTasks - 1]);
+                        currentTask = tasks[numOfTasks - 1];
+                        System.out.println("  [" + currentTask.getTaskIcon() + "]["
+                                + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
                         System.out.println("____________________________________________________________");
                         continue;
@@ -99,18 +130,24 @@ public class Duke {
                         if (inputParts.length < 2) {
                             throw new DukeException("OOPS!!! The description of a deadline cannot be empty.");
                         }
-                        if (numOfTasks >= tasks.length) throw new DukeException("OOPS!!! The task list is full.");
+                        if (numOfTasks >= tasks.length) {
+                            throw new DukeException("OOPS!!! The task list is full.");
+                        }
                         String deadlineInput = input.substring(command.length()).trim();
                         String[] deadlineParts = deadlineInput.split(" /by ");
-                        if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
-                            throw new DukeException("OOPS!!! The description and /by time of a deadline cannot be empty.");
+                        if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty()
+                                || deadlineParts[1].trim().isEmpty()) {
+                            throw new DukeException(
+                                    "OOPS!!! The description and /by time of a deadline cannot be empty.");
                         }
                         tasks[numOfTasks] = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Got it. I've added this task:");
-                        System.out.println("  [" + tasks[numOfTasks - 1].getTaskIcon() + "][" + tasks[numOfTasks - 1].getStatusIcon() + "] " + tasks[numOfTasks - 1]);
+                        currentTask = tasks[numOfTasks - 1];
+                        System.out.println("  [" + currentTask.getTaskIcon() + "]["
+                                + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
                         System.out.println("____________________________________________________________");
                         continue;
@@ -118,11 +155,14 @@ public class Duke {
                         if (inputParts.length < 2) {
                             throw new DukeException("OOPS!!! The description of an event cannot be empty.");
                         }
-                        if (numOfTasks >= tasks.length) throw new DukeException("OOPS!!! The task list is full.");
+                        if (numOfTasks >= tasks.length) {
+                            throw new DukeException("OOPS!!! The task list is full.");
+                        }
                         String eventInput = input.substring(command.length()).trim();
                         String[] eventParts = eventInput.split(" /from ");
                         if (eventParts.length < 2 || eventParts[0].trim().isEmpty()) {
-                            throw new DukeException("OOPS!!! The description and /from time of an event cannot be empty.");
+                            throw new DukeException(
+                                    "OOPS!!! The description and /from time of an event cannot be empty.");
                         }
                         String[] timeParts = eventParts[1].split(" /to ");
                         if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
@@ -133,7 +173,9 @@ public class Duke {
                         saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Got it. I've added this task:");
-                        System.out.println("  [" + tasks[numOfTasks - 1].getTaskIcon() + "][" + tasks[numOfTasks - 1].getStatusIcon() + "] " + tasks[numOfTasks - 1]);
+                        currentTask = tasks[numOfTasks - 1];
+                        System.out.println("  [" + currentTask.getTaskIcon() + "]["
+                                + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
                         System.out.println("____________________________________________________________");
                         continue;
