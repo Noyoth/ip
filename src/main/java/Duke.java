@@ -14,18 +14,14 @@ public class Duke {
      * @param args Command line arguments.
      */
     public static void main(String[] args) {
-        String chatbotName = "TBC";
-        System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm " + chatbotName + ".");
-        System.out.println("What can I do for you?");
-        System.out.println("____________________________________________________________");
+        Ui ui = new Ui();
+        ui.showWelcome();
 
-        Scanner scanner = new Scanner(System.in);
         Task[] tasks = new Task[100];
         int numOfTasks = loadTasks(tasks);
 
         while (true) {
-            String input = scanner.nextLine().trim();
+            String input = ui.readCommand();
             if (input.isEmpty()) {
                 continue;
             }
@@ -38,17 +34,17 @@ public class Duke {
             try {
                 switch (command) {
                     case "bye":
-                        System.out.println("____________________________________________________________");
-                        System.out.println("Bye bye.");
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
+                        ui.showGoodbye();
+                        ui.showLine();
                         return;
                     case "list":
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         for (int i = 0; i < numOfTasks; i++) {
                             System.out.println((i + 1) + ". [" + tasks[i].getTaskIcon() + "]["
                                     + tasks[i].getStatusIcon() + "] " + tasks[i]);
                         }
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     case "mark":
                         if (inputParts.length < 2) {
@@ -60,12 +56,12 @@ public class Duke {
                         }
                         tasks[indexOfTask].markAsDone();
                         saveTasks(tasks, numOfTasks);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         System.out.println("Nice! I've marked this task as done:");
                         currentTask = tasks[indexOfTask];
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     case "unmark":
                         if (inputParts.length < 2) {
@@ -77,12 +73,12 @@ public class Duke {
                         }
                         tasks[indexOfTask].markAsNotDone();
                         saveTasks(tasks, numOfTasks);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         System.out.println("OK, I've marked this task as not done yet:");
                         currentTask = tasks[indexOfTask];
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     case "delete":
                         if (inputParts.length < 2) {
@@ -99,12 +95,12 @@ public class Duke {
                         tasks[numOfTasks - 1] = null;
                         numOfTasks--;
                         saveTasks(tasks, numOfTasks);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         System.out.println("Noted. I've removed this task:");
                         System.out.println("  [" + removedTask.getTaskIcon() + "]["
                                 + removedTask.getStatusIcon() + "] " + removedTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     case "todo":
                         if (inputParts.length < 2) {
@@ -117,13 +113,13 @@ public class Duke {
                         tasks[numOfTasks] = new ToDo(todoName);
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         System.out.println("Got it. I've added this task:");
                         currentTask = tasks[numOfTasks - 1];
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     case "deadline":
                         if (inputParts.length < 2) {
@@ -137,18 +133,18 @@ public class Duke {
                         if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty()
                                 || deadlineParts[1].trim().isEmpty()) {
                             throw new DukeException(
-                                    "OOPS!!! The description and /by time of a deadline cannot be empty.");
+                                     "OOPS!!! The description and /by time of a deadline cannot be empty.");
                         }
                         tasks[numOfTasks] = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         System.out.println("Got it. I've added this task:");
                         currentTask = tasks[numOfTasks - 1];
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     case "event":
                         if (inputParts.length < 2) {
@@ -170,29 +166,29 @@ public class Duke {
                         tasks[numOfTasks] = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
                         numOfTasks++;
                         saveTasks(tasks, numOfTasks);
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         System.out.println("Got it. I've added this task:");
                         currentTask = tasks[numOfTasks - 1];
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + numOfTasks + " tasks in the list.");
-                        System.out.println("____________________________________________________________");
+                        ui.showLine();
                         continue;
                     default:
                         throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
             } catch (DukeException e) {
-                System.out.println("____________________________________________________________");
-                System.out.println(e.getMessage());
-                System.out.println("____________________________________________________________");
+                ui.showLine();
+                ui.showError(e.getMessage());
+                ui.showLine();
             } catch (NumberFormatException e) {
-                System.out.println("____________________________________________________________");
-                System.out.println("OOPS!!! The task number provided is invalid.");
-                System.out.println("____________________________________________________________");
+                ui.showLine();
+                ui.showError("OOPS!!! The task number provided is invalid.");
+                ui.showLine();
             } catch (Exception e) {
-                System.out.println("____________________________________________________________");
-                System.out.println("OOPS!!! An unexpected error occurred: " + e.getMessage());
-                System.out.println("____________________________________________________________");
+                ui.showLine();
+                ui.showError("OOPS!!! An unexpected error occurred: " + e.getMessage());
+                ui.showLine();
             }
         }
     }
