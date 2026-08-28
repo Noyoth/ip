@@ -16,6 +16,13 @@ public class Deadline extends Task {
 
     private LocalDateTime deadlineDate;
 
+    /**
+     * Constructs a Deadline task with the given description and date string.
+     *
+     * @param name     The description of the deadline task.
+     * @param deadline The deadline date/time string (yyyy-MM-dd or yyyy-MM-dd HHmm).
+     * @throws DukeException If the date/time string format is invalid.
+     */
     public Deadline(String name, String deadline) throws DukeException {
         super(name);
         this.deadlineDate = parseDateTime(deadline);

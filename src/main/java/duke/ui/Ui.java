@@ -13,6 +13,9 @@ public class Ui {
     private static final String DIVIDER = "____________________________________________________________";
     private final Scanner scanner;
 
+    /**
+     * Constructs a Ui instance initialized with standard console input.
+     */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }

@@ -12,6 +12,11 @@ import duke.ui.Ui;
 public class AddCommand extends Command {
     private final Task task;
 
+    /**
+     * Constructs an AddCommand with the task to be added.
+     *
+     * @param task The task to add.
+     */
     public AddCommand(Task task) {
         this.task = task;
     }

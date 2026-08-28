@@ -12,6 +12,11 @@ import duke.ui.Ui;
 public class MarkCommand extends Command {
     private final int targetIndex;
 
+    /**
+     * Constructs a MarkCommand for the task at the specified index.
+     *
+     * @param targetIndex The 0-based index of the task to mark as done.
+     */
     public MarkCommand(int targetIndex) {
         this.targetIndex = targetIndex;
     }

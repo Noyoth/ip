@@ -10,6 +10,11 @@ import duke.ui.Ui;
  */
 public abstract class Command {
     /**
+     * Constructs a Command.
+     */
+    public Command() {
+    }
+    /**
      * Executes the command with the provided TaskList, Ui, and Storage.
      *
      * @param tasks   The task list on which to execute the command.

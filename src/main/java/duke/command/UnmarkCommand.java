@@ -12,6 +12,11 @@ import duke.ui.Ui;
 public class UnmarkCommand extends Command {
     private final int targetIndex;
 
+    /**
+     * Constructs an UnmarkCommand for the task at the specified index.
+     *
+     * @param targetIndex The 0-based index of the task to mark as not done.
+     */
     public UnmarkCommand(int targetIndex) {
         this.targetIndex = targetIndex;
     }

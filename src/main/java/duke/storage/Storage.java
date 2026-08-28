@@ -20,6 +20,11 @@ import duke.task.ToDo;
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage handler configured for the specified file path.
+     *
+     * @param filePath The path to the file used for loading and saving tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
