@@ -1,3 +1,5 @@
+package duke.task;
+
 /**
  * Represents a generic task with a name and completion status.
  */
@@ -18,7 +20,6 @@ public class Task {
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
-
 
     /**
      * Formats the Task for saving to a file.

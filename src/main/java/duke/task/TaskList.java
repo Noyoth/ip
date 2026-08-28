@@ -1,4 +1,8 @@
+package duke.task;
+
 import java.util.ArrayList;
+
+import duke.exception.DukeException;
 
 /**
  * Encapsulates the collection of tasks and operations on the task list.
