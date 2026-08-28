@@ -68,6 +68,16 @@ public class Storage {
     }
 
     /**
+     * Saves the tasks in the given TaskList to the file specified by filePath.
+     *
+     * @param taskList The TaskList containing tasks to save.
+     * @throws DukeException If an I/O error occurs while saving.
+     */
+    public void save(TaskList taskList) throws DukeException {
+        save(taskList.getTasks());
+    }
+
+    /**
      * Saves the given list of tasks to the file specified by filePath.
      *
      * @param tasks The list of tasks to save.

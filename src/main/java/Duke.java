@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Represents the main entry point for the Duke chatbot application.
  */
@@ -16,12 +14,12 @@ public class Duke {
         ui.showWelcome();
 
         Storage storage = new Storage(FILE_PATH);
-        ArrayList<Task> tasks;
+        TaskList tasks;
         try {
-            tasks = storage.load();
+            tasks = new TaskList(storage.load());
         } catch (DukeException e) {
             ui.showLoadingError();
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
 
         while (true) {
@@ -45,8 +43,9 @@ public class Duke {
                     case "list":
                         ui.showLine();
                         for (int i = 0; i < tasks.size(); i++) {
-                            System.out.println((i + 1) + ". [" + tasks.get(i).getTaskIcon() + "]["
-                                    + tasks.get(i).getStatusIcon() + "] " + tasks.get(i));
+                            Task t = tasks.getTask(i);
+                            System.out.println((i + 1) + ". [" + t.getTaskIcon() + "]["
+                                    + t.getStatusIcon() + "] " + t);
                         }
                         ui.showLine();
                         continue;
@@ -55,14 +54,11 @@ public class Duke {
                             throw new DukeException("OOPS!!! The task number cannot be empty.");
                         }
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
-                        if (indexOfTask < 0 || indexOfTask >= tasks.size()) {
-                            throw new DukeException("OOPS!!! The task number is invalid.");
-                        }
-                        tasks.get(indexOfTask).markAsDone();
+                        currentTask = tasks.getTask(indexOfTask);
+                        currentTask.markAsDone();
                         storage.save(tasks);
                         ui.showLine();
                         System.out.println("Nice! I've marked this task as done:");
-                        currentTask = tasks.get(indexOfTask);
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         ui.showLine();
@@ -72,14 +68,11 @@ public class Duke {
                             throw new DukeException("OOPS!!! The task number cannot be empty.");
                         }
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
-                        if (indexOfTask < 0 || indexOfTask >= tasks.size()) {
-                            throw new DukeException("OOPS!!! The task number is invalid.");
-                        }
-                        tasks.get(indexOfTask).markAsNotDone();
+                        currentTask = tasks.getTask(indexOfTask);
+                        currentTask.markAsNotDone();
                         storage.save(tasks);
                         ui.showLine();
                         System.out.println("OK, I've marked this task as not done yet:");
-                        currentTask = tasks.get(indexOfTask);
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         ui.showLine();
@@ -89,10 +82,7 @@ public class Duke {
                             throw new DukeException("OOPS!!! The task number cannot be empty.");
                         }
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
-                        if (indexOfTask < 0 || indexOfTask >= tasks.size()) {
-                            throw new DukeException("OOPS!!! The task number is invalid.");
-                        }
-                        Task removedTask = tasks.remove(indexOfTask);
+                        Task removedTask = tasks.deleteTask(indexOfTask);
                         storage.save(tasks);
                         ui.showLine();
                         System.out.println("Noted. I've removed this task:");
@@ -106,11 +96,11 @@ public class Duke {
                             throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
                         }
                         String todoName = input.substring(command.length()).trim();
-                        tasks.add(new ToDo(todoName));
+                        tasks.addTask(new ToDo(todoName));
                         storage.save(tasks);
                         ui.showLine();
                         System.out.println("Got it. I've added this task:");
-                        currentTask = tasks.get(tasks.size() - 1);
+                        currentTask = tasks.getTask(tasks.size() - 1);
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -127,11 +117,11 @@ public class Duke {
                             throw new DukeException(
                                      "OOPS!!! The description and /by time of a deadline cannot be empty.");
                         }
-                        tasks.add(new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim()));
+                        tasks.addTask(new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim()));
                         storage.save(tasks);
                         ui.showLine();
                         System.out.println("Got it. I've added this task:");
-                        currentTask = tasks.get(tasks.size() - 1);
+                        currentTask = tasks.getTask(tasks.size() - 1);
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -151,11 +141,11 @@ public class Duke {
                         if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
                             throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
                         }
-                        tasks.add(new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
+                        tasks.addTask(new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
                         storage.save(tasks);
                         ui.showLine();
                         System.out.println("Got it. I've added this task:");
-                        currentTask = tasks.get(tasks.size() - 1);
+                        currentTask = tasks.getTask(tasks.size() - 1);
                         System.out.println("  [" + currentTask.getTaskIcon() + "]["
                                 + currentTask.getStatusIcon() + "] " + currentTask);
                         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
