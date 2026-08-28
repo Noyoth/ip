@@ -11,6 +11,16 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
+
+    /**
+     * Formats the Task for saving to a file.
+     *
+     * @return A pipe-separated string representing the Task's state.
+     */
+    public String toFileFormat() {
+        return getTaskIcon() + " | " + (isDone ? "1" : "0") + " | " + name;
+    }
+
     public String getTaskIcon() {
         return " ";
     }

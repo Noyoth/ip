@@ -9,12 +9,23 @@ public class Event extends Task{
     }
 
     @Override
+
+    /**
+     * Formats the Event for saving to a file.
+     *
+     * @return A pipe-separated string representing the Event's state.
+     */
+    public String toFileFormat() {
+        return super.toFileFormat() + " | " + startTime + "-" + endTime;
+    }
+
+    @Override
     public String getTaskIcon() {
         return "E";
     }
 
     @Override
     public String toString() {
-        return super.toString() + "(from: " + startTime + " to: " + endTime + ")";
+        return super.toString() + " (from: " + startTime + " to: " + endTime + ")";
     }
 }

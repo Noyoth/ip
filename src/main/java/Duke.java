@@ -37,6 +37,7 @@ public class Duke {
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
                         if (indexOfTask < 0 || indexOfTask >= numOfTasks) throw new DukeException("OOPS!!! The task number is invalid.");
                         tasks[indexOfTask].markAsDone();
+                        saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Nice! I've marked this task as done:");
                         System.out.println("  [" + tasks[indexOfTask].getTaskIcon() + "][" + tasks[indexOfTask].getStatusIcon() + "] " + tasks[indexOfTask]);
@@ -47,6 +48,7 @@ public class Duke {
                         indexOfTask = Integer.parseInt(inputParts[1]) - 1;
                         if (indexOfTask < 0 || indexOfTask >= numOfTasks) throw new DukeException("OOPS!!! The task number is invalid.");
                         tasks[indexOfTask].markAsNotDone();
+                        saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("OK, I've marked this task as not done yet:");
                         System.out.println("  [" + tasks[indexOfTask].getTaskIcon() + "][" + tasks[indexOfTask].getStatusIcon() + "] " + tasks[indexOfTask]);
@@ -62,6 +64,7 @@ public class Duke {
                         }
                         tasks[numOfTasks - 1] = null;
                         numOfTasks--;
+                        saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Noted. I've removed this task:");
                         System.out.println("  [" + removedTask.getTaskIcon() + "][" + removedTask.getStatusIcon() + "] " + removedTask);
@@ -75,6 +78,7 @@ public class Duke {
                         String todoName = input.substring(5).trim();
                         tasks[numOfTasks] = new ToDo(todoName);
                         numOfTasks++;
+                        saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Got it. I've added this task:");
                         System.out.println("  [" + tasks[numOfTasks - 1].getTaskIcon() + "][" + tasks[numOfTasks - 1].getStatusIcon() + "] " + tasks[numOfTasks - 1]);
@@ -88,8 +92,9 @@ public class Duke {
                         String deadlineInput = input.substring(9).trim();
                         String[] deadlineParts = deadlineInput.split(" /by ");
                         if (deadlineParts.length < 2) throw new DukeException("OOPS!!! The /by time of a deadline cannot be empty.");
-                        tasks[numOfTasks] = new Deadline(deadlineParts[0].trim() + " ", deadlineParts[1].trim());
+                        tasks[numOfTasks] = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
                         numOfTasks++;
+                        saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Got it. I've added this task:");
                         System.out.println("  [" + tasks[numOfTasks - 1].getTaskIcon() + "][" + tasks[numOfTasks - 1].getStatusIcon() + "] " + tasks[numOfTasks - 1]);
@@ -105,8 +110,9 @@ public class Duke {
                         if (eventParts.length < 2) throw new DukeException("OOPS!!! The /from time of an event cannot be empty.");
                         String[] timeParts = eventParts[1].trim().split(" /to ");
                         if (timeParts.length < 2) throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
-                        tasks[numOfTasks] = new Event(eventParts[0].trim() + " ", timeParts[0].trim(), timeParts[1].trim());
+                        tasks[numOfTasks] = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
                         numOfTasks++;
+                        saveTasks(tasks, numOfTasks);
                         System.out.println("____________________________________________________________");
                         System.out.println("Got it. I've added this task:");
                         System.out.println("  [" + tasks[numOfTasks - 1].getTaskIcon() + "][" + tasks[numOfTasks - 1].getStatusIcon() + "] " + tasks[numOfTasks - 1]);
@@ -127,4 +133,28 @@ public class Duke {
             }
         }
     }
+
+    /**
+     * Saves the current list of tasks to the hard disk at ./data/duke.txt.
+     * This method ensures the data directory exists before attempting to write.
+     *
+     * @param tasks      The array containing the current tasks.
+     * @param numOfTasks The number of active tasks in the array.
+     */
+    private static void saveTasks(Task[] tasks, int numOfTasks) {
+        try {
+            java.io.File directory = new java.io.File("./data");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            java.io.FileWriter writer = new java.io.FileWriter("./data/duke.txt");
+            for (int i = 0; i < numOfTasks; i++) {
+                writer.write(tasks[i].toFileFormat() + "\n");
+            }
+            writer.close();
+        } catch (java.io.IOException e) {
+            System.out.println("An error occurred while saving tasks.");
+        }
+    }
+
 }
