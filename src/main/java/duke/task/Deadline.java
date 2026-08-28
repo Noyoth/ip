@@ -1,21 +1,24 @@
+package duke.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import duke.exception.DukeException;
+
 /**
- * Represents an event task with a start and end time.
+ * Represents a task with a deadline.
  */
-public class Event extends Task {
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+public class Deadline extends Task {
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy, h:mm a");
 
-    public Event(String name, String startTime, String endTime) throws DukeException {
+    private LocalDateTime deadlineDate;
+
+    public Deadline(String name, String deadline) throws DukeException {
         super(name);
-        this.startDate = parseDateTime(startTime);
-        this.endDate = parseDateTime(endTime);
+        this.deadlineDate = parseDateTime(deadline);
     }
 
     private LocalDateTime parseDateTime(String input) throws DukeException {
@@ -34,23 +37,22 @@ public class Event extends Task {
     }
 
     /**
-     * Formats the Event for saving to a file.
+     * Formats the Deadline for saving to a file.
      *
-     * @return A pipe-separated string representing the Event's state.
+     * @return A pipe-separated string representing the Deadline's state.
      */
     @Override
     public String toFileFormat() {
-        return super.toFileFormat() + " | " + startDate + " | " + endDate;
+        return super.toFileFormat() + " | " + deadlineDate;
     }
 
     @Override
     public String getTaskIcon() {
-        return "E";
+        return "D";
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (from: " + startDate.format(OUTPUT_FORMAT)
-                + " to: " + endDate.format(OUTPUT_FORMAT) + ")";
+        return super.toString() + " (by: " + deadlineDate.format(OUTPUT_FORMAT) + ")";
     }
 }

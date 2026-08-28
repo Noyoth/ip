@@ -1,19 +1,26 @@
+package duke.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import duke.exception.DukeException;
+
 /**
- * Represents a task with a deadline.
+ * Represents an event task with a start and end time.
  */
-public class Deadline extends Task {
-    private LocalDateTime deadlineDate;
+public class Event extends Task {
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy, h:mm a");
 
-    public Deadline(String name, String deadline) throws DukeException {
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
+    public Event(String name, String startTime, String endTime) throws DukeException {
         super(name);
-        this.deadlineDate = parseDateTime(deadline);
+        this.startDate = parseDateTime(startTime);
+        this.endDate = parseDateTime(endTime);
     }
 
     private LocalDateTime parseDateTime(String input) throws DukeException {
@@ -32,22 +39,23 @@ public class Deadline extends Task {
     }
 
     /**
-     * Formats the Deadline for saving to a file.
+     * Formats the Event for saving to a file.
      *
-     * @return A pipe-separated string representing the Deadline's state.
+     * @return A pipe-separated string representing the Event's state.
      */
     @Override
     public String toFileFormat() {
-        return super.toFileFormat() + " | " + deadlineDate;
+        return super.toFileFormat() + " | " + startDate + " | " + endDate;
     }
 
     @Override
     public String getTaskIcon() {
-        return "D";
+        return "E";
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " + deadlineDate.format(OUTPUT_FORMAT) + ")";
+        return super.toString() + " (from: " + startDate.format(OUTPUT_FORMAT)
+                + " to: " + endDate.format(OUTPUT_FORMAT) + ")";
     }
 }

@@ -1,4 +1,10 @@
+package duke.ui;
+
 import java.util.Scanner;
+
+import duke.exception.DukeException;
+import duke.task.Task;
+import duke.task.TaskList;
 
 /**
  * Handles all user interactions and text output for the Duke application.
