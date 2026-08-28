@@ -19,7 +19,7 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
   * When suggesting a Git command, briefly explain what it does.
   * Add explanatory Javadoc comments to all classes and to nontrivial methods and fields when their purpose or behavior is not obvious.
-  * Make generated code as self-explanatory as possible, and include explanatory comments where they improve understanding.
+  * Make generated code as self-explanatory as possible. Try to minimise inline comments.
   * When faced with a design choice, choose the simplest option that is sufficient for the requirements, while briefly explaining relevant more advanced alternatives.
 
 # Project-specific requirements
@@ -31,7 +31,7 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
-When proposing or creating a commit message, include enough detail to explain the rationale for the change.
+When proposing or creating a commit message, ensure it complies with the Conventional Commits format, keeping it short and simple.
 Do not commit or push unless explicitly asked.
 
 ## Code Style

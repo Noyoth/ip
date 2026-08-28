@@ -1,12 +1,20 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Represents a task with a deadline.
  */
 public class Deadline extends Task {
-    private String deadline;
+    private LocalDate deadlineDate;
 
-    public Deadline(String name, String deadline) {
+    public Deadline(String name, String deadline) throws DukeException {
         super(name);
-        this.deadline = deadline;
+        try {
+            this.deadlineDate = LocalDate.parse(deadline);
+        } catch (DateTimeParseException e) {
+            throw new DukeException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+        }
     }
 
     /**
@@ -16,7 +24,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toFileFormat() {
-        return super.toFileFormat() + " | " + deadline;
+        return super.toFileFormat() + " | " + deadlineDate;
     }
 
     @Override
@@ -26,6 +34,6 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " + deadline + ")";
+        return super.toString() + " (by: " + deadlineDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }

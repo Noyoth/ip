@@ -1,14 +1,22 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Represents an event task with a start and end time.
  */
 public class Event extends Task {
-    private String startTime;
-    private String endTime;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    public Event(String name, String startTime, String endTime) {
+    public Event(String name, String startTime, String endTime) throws DukeException {
         super(name);
-        this.startTime = startTime;
-        this.endTime = endTime;
+        try {
+            this.startDate = LocalDate.parse(startTime);
+            this.endDate = LocalDate.parse(endTime);
+        } catch (DateTimeParseException e) {
+            throw new DukeException("Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+        }
     }
 
     /**
@@ -18,7 +26,7 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return super.toFileFormat() + " | " + startTime + "-" + endTime;
+        return super.toFileFormat() + " | " + startDate + " | " + endDate;
     }
 
     @Override
@@ -28,6 +36,6 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (from: " + startTime + " to: " + endTime + ")";
+        return super.toString() + " (from: " + startDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " to: " + endDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }
