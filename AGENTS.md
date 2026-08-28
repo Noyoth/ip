@@ -35,6 +35,15 @@ You MUST suggest a commit message every time after you make any changes to the c
 When proposing or creating a commit message, ensure it complies with the Conventional Commits format, keeping it short and simple.
 Do not commit or push unless explicitly asked.
 
+### Branching and Merging Workflow
+* **Feature Branches**: Implement each increment/task on a dedicated branch (e.g. `branch-Level-7`, `A-MoreOOP`, `A-Packages`, `A-JUnit`).
+* **Merging into `master`**:
+  1. Ensure the working tree is clean and all tests pass on the feature branch (`./gradlew test`).
+  2. Switch to `master`: `git checkout master`.
+  3. Ensure `master` is synchronized with remote: `git pull origin master`.
+  4. Perform an explicit non-fast-forward merge: `git merge --no-ff <branch-name> -m "chore: Merge <branch-name> into master"`.
+  5. Verify tests and build pass on `master` before pushing (`./gradlew test && ./gradlew build`).
+
 ## Code Style
 
 Ensure that all code complies with the [SE-EDU Java Coding Standard](https://se-education.org/guides/conventions/java/index.html).
