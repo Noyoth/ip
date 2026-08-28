@@ -28,7 +28,8 @@ public class Event extends Task {
                 return LocalDate.parse(input).atStartOfDay();
             }
         } catch (DateTimeParseException e) {
-            throw new DukeException("Invalid date format. Please use yyyy-MM-dd or yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
+            throw new DukeException(
+                    "Invalid date format. Please use yyyy-MM-dd or yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
         }
     }
 
@@ -49,6 +50,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (from: " + startDate.format(OUTPUT_FORMAT) + " to: " + endDate.format(OUTPUT_FORMAT) + ")";
+        return super.toString() + " (from: " + startDate.format(OUTPUT_FORMAT)
+                + " to: " + endDate.format(OUTPUT_FORMAT) + ")";
     }
 }
