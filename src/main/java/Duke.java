@@ -1,4 +1,8 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class Duke {
     public static void main(String[] args) {
@@ -143,15 +147,17 @@ public class Duke {
     private static int loadTasks(Task[] tasks) {
         int loadedCount = 0;
         try {
-            java.io.File file = new java.io.File("./data/duke.txt");
+            File file = new File("./data/duke.txt");
             if (!file.exists()) {
                 return 0;
             }
-            java.util.Scanner fileScanner = new java.util.Scanner(file);
+            Scanner fileScanner = new Scanner(file);
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] parts = line.split("\\s*\\|\\s*");
-                if (parts.length < 3) continue;
+                if (parts.length < 3) {
+                    continue;
+                }
                 String type = parts[0];
                 boolean isDone = parts[1].equals("1");
                 String name = parts[2];
@@ -177,8 +183,8 @@ public class Duke {
                 }
             }
             fileScanner.close();
-        } catch (java.io.FileNotFoundException e) {
-            
+        } catch (FileNotFoundException e) {
+
         }
         return loadedCount;
     }
@@ -192,16 +198,16 @@ public class Duke {
      */
     private static void saveTasks(Task[] tasks, int numOfTasks) {
         try {
-            java.io.File directory = new java.io.File("./data");
+            File directory = new File("./data");
             if (!directory.exists()) {
                 directory.mkdirs();
             }
-            java.io.FileWriter writer = new java.io.FileWriter("./data/duke.txt");
+            FileWriter writer = new FileWriter("./data/duke.txt");
             for (int i = 0; i < numOfTasks; i++) {
                 writer.write(tasks[i].toFileFormat() + "\n");
             }
             writer.close();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             System.out.println("An error occurred while saving tasks.");
         }
     }
