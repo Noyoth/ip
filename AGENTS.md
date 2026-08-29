@@ -38,7 +38,7 @@ When proposing or creating a commit message:
 Do not commit or push unless explicitly asked.
 
 ### Branching and Merging Workflow
-* **Feature Branches**: Implement each increment/task on a dedicated branch (e.g. `branch-Level-7`, `A-MoreOOP`, `A-Packages`, `A-JUnit`).
+* **Feature Branches**: Implement each increment/task on a dedicated branch starting with the prefix `branch-` (e.g. `branch-Level-7`, `branch-Level-8`, `branch-A-MoreOOP`, `branch-A-Packages`, `branch-A-JUnit`, `branch-Level-9`).
 * **Merging into `master`**:
   1. Ensure the working tree is clean and all tests pass on the feature branch (`./gradlew test`).
   2. Switch to `master`: `git checkout master`.
