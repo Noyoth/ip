@@ -32,7 +32,9 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 
 Use lightweight tags unless the user requests an annotated tag.
 You MUST suggest a commit message every time after you make any changes to the codebase.
-When proposing or creating a commit message, ensure it complies with the Conventional Commits format, keeping it short and simple.
+When proposing or creating a commit message:
+* Comply with the Conventional Commits format, keeping descriptions short and simple.
+* Capitalize the initial letter of the subject/description following the colon (e.g., `feat: Add search feature`, `fix: Correct date parsing logic`).
 Do not commit or push unless explicitly asked.
 
 ### Branching and Merging Workflow
