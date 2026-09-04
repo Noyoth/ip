@@ -97,4 +97,26 @@ public class TaskListTest {
         TaskList found = taskList.findTasks("nonexistent");
         assertEquals(0, found.size());
     }
+
+    @Test
+    public void constructor_varargsEmpty_initializesEmptyList() {
+        TaskList emptyList = new TaskList();
+        assertEquals(0, emptyList.size());
+    }
+
+    @Test
+    public void constructor_varargsMultipleTasks_initializesProperly() throws DukeException {
+        TaskList list = new TaskList(todo, deadline);
+        assertEquals(2, list.size());
+        assertEquals(todo, list.getTask(0));
+        assertEquals(deadline, list.getTask(1));
+    }
+
+    @Test
+    public void addTasks_varargsMultipleTasks_addsAllTasks() throws DukeException {
+        taskList.addTasks(todo, deadline);
+        assertEquals(2, taskList.size());
+        assertEquals(todo, taskList.getTask(0));
+        assertEquals(deadline, taskList.getTask(1));
+    }
 }
