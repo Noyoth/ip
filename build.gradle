@@ -61,7 +61,7 @@ test {
 }
 
 application {
-    mainClass = 'duke.Duke'
+    mainClass = 'duke.Launcher'
 }
 
 jar {
