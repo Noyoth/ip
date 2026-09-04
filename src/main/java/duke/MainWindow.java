@@ -24,14 +24,18 @@ public class MainWindow extends AnchorPane {
     private Duke duke;
 
     private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private final Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private final Image tbcImage = new Image(this.getClass().getResourceAsStream("/images/DaTbc.png"));
 
     /**
-     * Initializes the controller and binds the scroll pane to the dialog container's height.
+     * Initializes the controller, binds the scroll pane to the dialog container's height,
+     * and greets the user with TBC's welcome message.
      */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.getChildren().add(
+                DialogBox.getTbcDialog("Hello! I'm TBC.\nWhat can I do for you?", tbcImage)
+        );
     }
 
     /**
@@ -44,7 +48,7 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply,
+     * Creates two dialog boxes, one echoing user input and the other containing TBC's reply,
      * and appends them to the dialog container. Clears the user input after processing.
      */
     @FXML
@@ -53,7 +57,7 @@ public class MainWindow extends AnchorPane {
         String response = duke.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getTbcDialog(response, tbcImage)
         );
         userInput.clear();
     }

@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * A GUI for Duke using FXML.
+ * A GUI for TBC using FXML.
  */
 public class MainApp extends Application {
 
@@ -22,7 +22,7 @@ public class MainApp extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setTitle("Duke");
+            stage.setTitle("TBC");
             stage.setResizable(false);
             stage.setMinHeight(600.0);
             stage.setMinWidth(400.0);

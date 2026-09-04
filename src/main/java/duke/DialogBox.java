@@ -72,6 +72,30 @@ public class DialogBox extends HBox {
     }
 
     /**
+     * Creates a TBC dialog box with the speaker flipped to the left.
+     *
+     * @param text The response text from TBC.
+     * @param img  The TBC display picture.
+     * @return A DialogBox configured for TBC response.
+     */
+    public static DialogBox getTbcDialog(String text, Image img) {
+        var db = new DialogBox(text, img);
+        db.flip();
+        return db;
+    }
+
+    /**
+     * Creates a TBC dialog box with the speaker flipped to the left.
+     *
+     * @param l  The label containing TBC text.
+     * @param iv The TBC display picture view.
+     * @return A DialogBox configured for TBC response.
+     */
+    public static DialogBox getTbcDialog(Label l, ImageView iv) {
+        return getTbcDialog(l.getText(), iv.getImage());
+    }
+
+    /**
      * Creates a Duke dialog box with the speaker flipped to the left.
      *
      * @param text The response text from Duke.
@@ -79,9 +103,7 @@ public class DialogBox extends HBox {
      * @return A DialogBox configured for Duke response.
      */
     public static DialogBox getDukeDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
-        db.flip();
-        return db;
+        return getTbcDialog(text, img);
     }
 
     /**
@@ -92,6 +114,6 @@ public class DialogBox extends HBox {
      * @return A DialogBox configured for Duke response.
      */
     public static DialogBox getDukeDialog(Label l, ImageView iv) {
-        return getDukeDialog(l.getText(), iv.getImage());
+        return getTbcDialog(l, iv);
     }
 }
