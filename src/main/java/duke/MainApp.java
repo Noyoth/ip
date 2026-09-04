@@ -3,6 +3,7 @@ package duke;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -60,5 +61,31 @@ public class MainApp extends Application {
         AnchorPane.setRightAnchor(sendButton, 1.0);
         AnchorPane.setLeftAnchor(userInput, 1.0);
         AnchorPane.setBottomAnchor(userInput, 1.0);
+
+        sendButton.setOnAction((event) -> handleUserInput());
+        userInput.setOnAction((event) -> handleUserInput());
+
+        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
+    }
+
+    /**
+     * Creates two labels, one echoing user input and the other containing Duke's dummy reply,
+     * and appends them to the dialog container. Clears the user input after processing.
+     */
+    private void handleUserInput() {
+        Label userText = new Label(userInput.getText());
+        Label dukeText = new Label(getDummyResponse(userInput.getText()));
+        dialogContainer.getChildren().addAll(userText, dukeText);
+        userInput.clear();
+    }
+
+    /**
+     * Generates a dummy response for user input in Part 2.
+     *
+     * @param input The raw user input string.
+     * @return The dummy response string.
+     */
+    private String getDummyResponse(String input) {
+        return "Duke: " + input;
     }
 }
