@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
  */
 public class MainWindow extends AnchorPane {
     @FXML
+    private AnchorPane mainPane;
+    @FXML
     private ScrollPane scrollPane;
     @FXML
     private VBox dialogContainer;
@@ -20,8 +22,11 @@ public class MainWindow extends AnchorPane {
     private TextField userInput;
     @FXML
     private Button sendButton;
+    @FXML
+    private Button themeButton;
 
     private Duke duke;
+    private boolean isDarkMode = false;
 
     private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     private final Image tbcImage = new Image(this.getClass().getResourceAsStream("/images/DaTbc.png"));
@@ -45,6 +50,21 @@ public class MainWindow extends AnchorPane {
      */
     public void setDuke(Duke d) {
         duke = d;
+    }
+
+    /**
+     * Toggles between light theme and dark theme.
+     */
+    @FXML
+    private void handleToggleTheme() {
+        isDarkMode = !isDarkMode;
+        if (isDarkMode) {
+            mainPane.getStyleClass().add("dark-theme");
+            themeButton.setText("☀️ Light Mode");
+        } else {
+            mainPane.getStyleClass().remove("dark-theme");
+            themeButton.setText("🌙 Dark Mode");
+        }
     }
 
     /**
