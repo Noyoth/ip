@@ -60,10 +60,10 @@ public class MainWindow extends AnchorPane {
         isDarkMode = !isDarkMode;
         if (isDarkMode) {
             mainPane.getStyleClass().add("dark-theme");
-            themeButton.setText("☀️ Light Mode");
+            themeButton.setText("Light Mode");
         } else {
             mainPane.getStyleClass().remove("dark-theme");
-            themeButton.setText("🌙 Dark Mode");
+            themeButton.setText("Dark Mode");
         }
     }
 
