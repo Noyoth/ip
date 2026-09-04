@@ -23,7 +23,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             stage.setTitle("TBC");
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setMinHeight(600.0);
             stage.setMinWidth(400.0);
             fxmlLoader.<MainWindow>getController().setDuke(duke);
