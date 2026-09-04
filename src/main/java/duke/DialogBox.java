@@ -1,31 +1,28 @@
 package duke;
 
 import java.io.IOException;
-import java.util.Collections;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 /**
- * A custom control using HBox and FXML.
- * This control represents a dialog box consisting of an ImageView to represent the speaker's face
- * and a label containing text from the speaker.
+ * A custom control using HBox and FXML representing a dialogue row.
+ * The left column displays the speaker's avatar and name,
+ * and the right column displays the dialogue text.
  */
 public class DialogBox extends HBox {
     @FXML
     private Label dialog;
     @FXML
     private ImageView displayPicture;
+    @FXML
+    private Label speakerName;
 
-    private DialogBox(String text, Image img) {
+    private DialogBox(String text, Image img, String speaker) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DialogBox.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -37,31 +34,22 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        speakerName.setText(speaker);
     }
 
     /**
-     * Flips the dialog box such that the ImageView is on the left and text on the right.
-     */
-    private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
-        setAlignment(Pos.TOP_LEFT);
-    }
-
-    /**
-     * Creates a user dialog box with the speaker on the right.
+     * Creates a user dialog box with User avatar and name on the left and text on the right.
      *
      * @param text The message text from the user.
      * @param img  The user display picture.
      * @return A DialogBox configured for user input.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        return new DialogBox(text, img, "User");
     }
 
     /**
-     * Creates a user dialog box with the speaker on the right.
+     * Creates a user dialog box with User avatar and name on the left and text on the right.
      *
      * @param l  The label containing user text.
      * @param iv The user display picture view.
@@ -72,20 +60,18 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a TBC dialog box with the speaker flipped to the left.
+     * Creates a TBC dialog box with TBC avatar and name on the left and text on the right.
      *
      * @param text The response text from TBC.
      * @param img  The TBC display picture.
      * @return A DialogBox configured for TBC response.
      */
     public static DialogBox getTbcDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
-        db.flip();
-        return db;
+        return new DialogBox(text, img, "TBC");
     }
 
     /**
-     * Creates a TBC dialog box with the speaker flipped to the left.
+     * Creates a TBC dialog box with TBC avatar and name on the left and text on the right.
      *
      * @param l  The label containing TBC text.
      * @param iv The TBC display picture view.
@@ -96,7 +82,7 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a Duke dialog box with the speaker flipped to the left.
+     * Creates a Duke dialog box for backward compatibility.
      *
      * @param text The response text from Duke.
      * @param img  The Duke display picture.
@@ -107,7 +93,7 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a Duke dialog box with the speaker flipped to the left.
+     * Creates a Duke dialog box for backward compatibility.
      *
      * @param l  The label containing Duke text.
      * @param iv The Duke display picture view.
