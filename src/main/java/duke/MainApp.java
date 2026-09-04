@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -19,6 +21,10 @@ public class MainApp extends Application {
     private VBox dialogContainer;
     private TextField userInput;
     private Button sendButton;
+
+    private final Duke duke = new Duke();
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     @Override
     public void start(Stage stage) {
@@ -69,23 +75,16 @@ public class MainApp extends Application {
     }
 
     /**
-     * Creates two labels, one echoing user input and the other containing Duke's dummy reply,
+     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply,
      * and appends them to the dialog container. Clears the user input after processing.
      */
     private void handleUserInput() {
-        Label userText = new Label(userInput.getText());
-        Label dukeText = new Label(getDummyResponse(userInput.getText()));
-        dialogContainer.getChildren().addAll(userText, dukeText);
+        String input = userInput.getText();
+        String response = duke.getResponse(input);
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(new Label(input), new ImageView(userImage)),
+                DialogBox.getDukeDialog(new Label(response), new ImageView(dukeImage))
+        );
         userInput.clear();
-    }
-
-    /**
-     * Generates a dummy response for user input in Part 2.
-     *
-     * @param input The raw user input string.
-     * @return The dummy response string.
-     */
-    private String getDummyResponse(String input) {
-        return "Duke: " + input;
     }
 }
