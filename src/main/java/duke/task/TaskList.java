@@ -1,6 +1,7 @@
 package duke.task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import duke.exception.DukeException;
 
@@ -11,10 +12,12 @@ public class TaskList {
     private final ArrayList<Task> tasks;
 
     /**
-     * Constructs an empty TaskList.
+     * Constructs a TaskList initialized with the given tasks.
+     *
+     * @param tasks The initial tasks to populate the list with.
      */
-    public TaskList() {
-        this.tasks = new ArrayList<>();
+    public TaskList(Task... tasks) {
+        this.tasks = new ArrayList<>(Arrays.asList(tasks));
     }
 
     /**
@@ -33,6 +36,17 @@ public class TaskList {
      */
     public void addTask(Task task) {
         tasks.add(task);
+    }
+
+    /**
+     * Adds one or more tasks to the task list.
+     *
+     * @param tasksToAdd The tasks to add to the list.
+     */
+    public void addTasks(Task... tasksToAdd) {
+        for (Task task : tasksToAdd) {
+            tasks.add(task);
+        }
     }
 
     /**
