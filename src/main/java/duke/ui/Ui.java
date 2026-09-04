@@ -38,22 +38,36 @@ public class Ui {
     }
 
     /**
+     * Displays one or more message lines to standard output and updates the response buffer.
+     *
+     * @param messages The message lines to display.
+     */
+    public void showMessages(String... messages) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < messages.length; i++) {
+            System.out.println(messages[i]);
+            if (i > 0) {
+                sb.append("\n");
+            }
+            sb.append(messages[i]);
+        }
+        lastResponse = sb.toString();
+    }
+
+    /**
      * Prints the welcome message upon application startup.
      */
     public void showWelcome() {
         showLine();
-        String msg = "Hello! I'm TBC.\nWhat can I do for you?";
-        System.out.println(msg);
+        showMessages("Hello! I'm TBC.", "What can I do for you?");
         showLine();
-        lastResponse = msg;
     }
 
     /**
      * Prints the exit goodbye message.
      */
     public void showGoodbye() {
-        lastResponse = "Bye bye.";
-        System.out.println(lastResponse);
+        showMessages("Bye bye.");
     }
 
     /**
@@ -62,16 +76,14 @@ public class Ui {
      * @param message The error message to display.
      */
     public void showError(String message) {
-        lastResponse = message;
-        System.out.println(message);
+        showMessages(message);
     }
 
     /**
      * Prints a loading error message if tasks could not be loaded from file.
      */
     public void showLoadingError() {
-        lastResponse = "Error while loading tasks: file could not be loaded.";
-        System.out.println(lastResponse);
+        showMessages("Error while loading tasks: file could not be loaded.");
     }
 
     /**
@@ -81,26 +93,21 @@ public class Ui {
      */
     public void showTaskList(TaskList tasks) {
         if (tasks.size() == 0) {
-            lastResponse = "There are no tasks in your list.";
-            System.out.println(lastResponse);
+            showMessages("There are no tasks in your list.");
             return;
         }
-        StringBuilder sb = new StringBuilder();
+        String[] taskLines = new String[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {
             try {
                 Task t = tasks.getTask(i);
-                String line = (i + 1) + ". [" + t.getTaskIcon() + "]["
+                taskLines[i] = (i + 1) + ". [" + t.getTaskIcon() + "]["
                         + t.getStatusIcon() + "] " + t;
-                System.out.println(line);
-                if (i > 0) {
-                    sb.append("\n");
-                }
-                sb.append(line);
             } catch (DukeException e) {
                 showError(e.getMessage());
+                return;
             }
         }
-        lastResponse = sb.toString();
+        showMessages(taskLines);
     }
 
     /**
@@ -110,11 +117,11 @@ public class Ui {
      * @param totalTasks The new total count of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
-        String msg = "Got it. I've added this task:\n"
-                + "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task + "\n"
-                + "Now you have " + totalTasks + " tasks in the list.";
-        System.out.println(msg);
-        lastResponse = msg;
+        showMessages(
+                "Got it. I've added this task:",
+                "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task,
+                "Now you have " + totalTasks + " tasks in the list."
+        );
     }
 
     /**
@@ -124,12 +131,11 @@ public class Ui {
      * @param totalTasks The new total count of tasks.
      */
     public void showTaskDeleted(Task task, int totalTasks) {
-        String msg = "Noted. I've removed this task:\n"
-                + "  [" + task.getTaskIcon() + "]["
-                + task.getStatusIcon() + "] " + task + "\n"
-                + "Now you have " + totalTasks + " tasks in the list.";
-        System.out.println(msg);
-        lastResponse = msg;
+        showMessages(
+                "Noted. I've removed this task:",
+                "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task,
+                "Now you have " + totalTasks + " tasks in the list."
+        );
     }
 
     /**
@@ -138,10 +144,10 @@ public class Ui {
      * @param task The marked task.
      */
     public void showTaskMarked(Task task) {
-        String msg = "Nice! I've marked this task as done:\n"
-                + "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task;
-        System.out.println(msg);
-        lastResponse = msg;
+        showMessages(
+                "Nice! I've marked this task as done:",
+                "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task
+        );
     }
 
     /**
@@ -150,10 +156,10 @@ public class Ui {
      * @param task The unmarked task.
      */
     public void showTaskUnmarked(Task task) {
-        String msg = "OK, I've marked this task as not done yet:\n"
-                + "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task;
-        System.out.println(msg);
-        lastResponse = msg;
+        showMessages(
+                "OK, I've marked this task as not done yet:",
+                "  [" + task.getTaskIcon() + "][" + task.getStatusIcon() + "] " + task
+        );
     }
 
     /**
@@ -162,20 +168,19 @@ public class Ui {
      * @param matchingTasks The TaskList containing matched tasks.
      */
     public void showFoundTasks(TaskList matchingTasks) {
-        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:");
-        System.out.println("Here are the matching tasks in your list:");
+        String[] lines = new String[matchingTasks.size() + 1];
+        lines[0] = "Here are the matching tasks in your list:";
         for (int i = 0; i < matchingTasks.size(); i++) {
             try {
                 Task t = matchingTasks.getTask(i);
-                String line = (i + 1) + ". [" + t.getTaskIcon() + "]["
+                lines[i + 1] = (i + 1) + ". [" + t.getTaskIcon() + "]["
                         + t.getStatusIcon() + "] " + t;
-                System.out.println(line);
-                sb.append("\n").append(line);
             } catch (DukeException e) {
                 showError(e.getMessage());
+                return;
             }
         }
-        lastResponse = sb.toString();
+        showMessages(lines);
     }
 
     /**
