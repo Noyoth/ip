@@ -1,5 +1,6 @@
 package duke.ui;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import duke.exception.DukeException;
@@ -44,15 +45,8 @@ public class Ui {
      */
     public void showMessages(String... messages) {
         assert messages != null : "Messages array must not be null";
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < messages.length; i++) {
-            System.out.println(messages[i]);
-            if (i > 0) {
-                sb.append("\n");
-            }
-            sb.append(messages[i]);
-        }
-        lastResponse = sb.toString();
+        Arrays.stream(messages).forEach(System.out::println);
+        lastResponse = String.join("\n", messages);
     }
 
     /**

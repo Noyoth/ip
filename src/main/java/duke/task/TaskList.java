@@ -3,6 +3,7 @@ package duke.task;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import duke.exception.DukeException;
 
@@ -109,12 +110,9 @@ public class TaskList {
      */
     public TaskList findTasks(String keyword) {
         assert keyword != null : "Search keyword must not be null";
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.toString().contains(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
+        ArrayList<Task> matchingTasks = tasks.stream()
+                .filter(task -> task.toString().contains(keyword))
+                .collect(Collectors.toCollection(ArrayList::new));
         return new TaskList(matchingTasks);
     }
 }
