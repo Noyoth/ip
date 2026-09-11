@@ -2,10 +2,12 @@ package duke.storage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import duke.exception.DukeException;
 import duke.task.Deadline;
@@ -104,11 +106,10 @@ public class Storage {
             if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
                 throw new DukeException("Failed to create directory: " + parentDir.getAbsolutePath());
             }
-            try (FileWriter writer = new FileWriter(file)) {
-                for (Task task : tasks) {
-                    writer.write(task.toFileFormat() + "\n");
-                }
-            }
+            List<String> lines = tasks.stream()
+                    .map(Task::toFileFormat)
+                    .collect(Collectors.toList());
+            Files.write(file.toPath(), lines);
         } catch (IOException e) {
             throw new DukeException("An error occurred while saving tasks.");
         }
