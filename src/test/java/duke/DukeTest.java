@@ -45,6 +45,13 @@ public class DukeTest {
     }
 
     @Test
+    public void getResponse_validPlaceCommand_returnsAddedMessage() {
+        String response = duke.getResponse("place Jumbo Seafood /details Clark Quay");
+        assertTrue(response.contains("Got it. I've added this place:"));
+        assertTrue(response.contains("Jumbo Seafood (details: Clark Quay)"));
+    }
+
+    @Test
     public void getResponse_nullInput_throwsAssertionError() {
         assertThrows(AssertionError.class, () -> duke.getResponse(null));
     }

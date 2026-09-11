@@ -3,6 +3,7 @@ package duke;
 import duke.command.Command;
 import duke.exception.DukeException;
 import duke.parser.Parser;
+import duke.place.PlaceList;
 import duke.storage.Storage;
 import duke.task.TaskList;
 import duke.ui.Ui;
@@ -35,6 +36,11 @@ public class Duke {
         } catch (DukeException e) {
             ui.showLoadingError();
             tasks = new TaskList();
+        }
+        try {
+            storage.loadPlaces();
+        } catch (DukeException e) {
+            storage.setPlaceList(new PlaceList());
         }
     }
 

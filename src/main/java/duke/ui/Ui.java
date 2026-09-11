@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import duke.exception.DukeException;
+import duke.place.Place;
+import duke.place.PlaceList;
 import duke.task.Task;
 import duke.task.TaskList;
 
@@ -182,6 +184,82 @@ public class Ui {
                 Task t = matchingTasks.getTask(i);
                 lines[i + 1] = (i + 1) + ". [" + t.getTaskIcon() + "]["
                         + t.getStatusIcon() + "] " + t;
+            } catch (DukeException e) {
+                showError(e.getMessage());
+                return;
+            }
+        }
+        showMessages(lines);
+    }
+
+    /**
+     * Displays confirmation that a place has been added.
+     *
+     * @param place       The added place.
+     * @param totalPlaces The new total count of places.
+     */
+    public void showPlaceAdded(Place place, int totalPlaces) {
+        showMessages(
+                "Got it. I've added this place:",
+                "  " + place,
+                "Now you have " + totalPlaces + " places in the list."
+        );
+    }
+
+    /**
+     * Displays confirmation that a place has been removed.
+     *
+     * @param place       The removed place.
+     * @param totalPlaces The new total count of places.
+     */
+    public void showPlaceDeleted(Place place, int totalPlaces) {
+        showMessages(
+                "Noted. I've removed this place:",
+                "  " + place,
+                "Now you have " + totalPlaces + " places in the list."
+        );
+    }
+
+    /**
+     * Displays all places in the place list.
+     *
+     * @param places The PlaceList containing places to display.
+     */
+    public void showPlacesList(PlaceList places) {
+        if (places.size() == 0) {
+            showMessages("There are no places in your list.");
+            return;
+        }
+        String[] lines = new String[places.size() + 1];
+        lines[0] = "Here are the places in your list:";
+        for (int i = 0; i < places.size(); i++) {
+            try {
+                Place p = places.getPlace(i);
+                lines[i + 1] = (i + 1) + ". " + p;
+            } catch (DukeException e) {
+                showError(e.getMessage());
+                return;
+            }
+        }
+        showMessages(lines);
+    }
+
+    /**
+     * Displays places matching a search keyword.
+     *
+     * @param matchingPlaces The PlaceList containing matched places.
+     */
+    public void showFoundPlaces(PlaceList matchingPlaces) {
+        if (matchingPlaces.size() == 0) {
+            showMessages("There are no matching places found.");
+            return;
+        }
+        String[] lines = new String[matchingPlaces.size() + 1];
+        lines[0] = "Here are the matching places in your list:";
+        for (int i = 0; i < matchingPlaces.size(); i++) {
+            try {
+                Place p = matchingPlaces.getPlace(i);
+                lines[i + 1] = (i + 1) + ". " + p;
             } catch (DukeException e) {
                 showError(e.getMessage());
                 return;

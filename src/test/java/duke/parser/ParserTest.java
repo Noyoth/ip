@@ -8,11 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import duke.command.AddCommand;
+import duke.command.AddPlaceCommand;
 import duke.command.Command;
 import duke.command.DeleteCommand;
+import duke.command.DeletePlaceCommand;
 import duke.command.ExitCommand;
 import duke.command.FindCommand;
+import duke.command.FindPlaceCommand;
 import duke.command.ListCommand;
+import duke.command.ListPlacesCommand;
 import duke.command.MarkCommand;
 import duke.command.UndoCommand;
 import duke.command.UnmarkCommand;
@@ -137,6 +141,54 @@ public class ParserTest {
     public void parse_undoCommand_returnsUndoCommand() throws DukeException {
         Command command = Parser.parse("undo");
         assertInstanceOf(UndoCommand.class, command);
+    }
+
+    @Test
+    public void parse_validPlaceCommand_returnsAddPlaceCommand() throws DukeException {
+        Command command = Parser.parse("place Sentosa");
+        assertInstanceOf(AddPlaceCommand.class, command);
+    }
+
+    @Test
+    public void parse_placeCommandWithDetails_returnsAddPlaceCommand() throws DukeException {
+        Command command = Parser.parse("place Jumbo Seafood /details Riverside Point");
+        assertInstanceOf(AddPlaceCommand.class, command);
+    }
+
+    @Test
+    public void parse_emptyPlaceName_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () -> Parser.parse("place"));
+        assertEquals("OOPS!!! The name of a place cannot be empty.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_placesCommand_returnsListPlacesCommand() throws DukeException {
+        Command command = Parser.parse("places");
+        assertInstanceOf(ListPlacesCommand.class, command);
+    }
+
+    @Test
+    public void parse_deletePlaceCommand_returnsDeletePlaceCommand() throws DukeException {
+        Command command = Parser.parse("deleteplace 1");
+        assertInstanceOf(DeletePlaceCommand.class, command);
+    }
+
+    @Test
+    public void parse_deletePlaceMissingIndex_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () -> Parser.parse("deleteplace"));
+        assertEquals("OOPS!!! The place number cannot be empty.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_findPlaceCommand_returnsFindPlaceCommand() throws DukeException {
+        Command command = Parser.parse("findplace seafood");
+        assertInstanceOf(FindPlaceCommand.class, command);
+    }
+
+    @Test
+    public void parse_findPlaceMissingKeyword_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () -> Parser.parse("findplace"));
+        assertEquals("OOPS!!! The search keyword cannot be empty.", ex.getMessage());
     }
 
     @Test
