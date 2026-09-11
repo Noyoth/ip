@@ -18,6 +18,24 @@ public class Task {
     }
 
     /**
+     * Returns whether the task is marked as done.
+     *
+     * @return True if the task is done, false otherwise.
+     */
+    public boolean isDone() {
+        return isDone;
+    }
+
+    /**
+     * Returns the description of the task.
+     *
+     * @return The task description.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Returns the status icon for the task.
      *
      * @return "X" if done, " " otherwise.
@@ -56,6 +74,19 @@ public class Task {
      */
     public void markAsNotDone() {
         this.isDone = false;
+    }
+
+    /**
+     * Creates and returns a copy of this task.
+     *
+     * @return A copy of this task.
+     */
+    public Task copy() {
+        Task copy = new Task(this.name);
+        if (this.isDone) {
+            copy.markAsDone();
+        }
+        return copy;
     }
 
     /**

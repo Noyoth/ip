@@ -1,7 +1,9 @@
 package duke.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
@@ -123,5 +125,60 @@ public class TaskListTest {
     @Test
     public void addTask_nullTask_throwsAssertionError() {
         assertThrows(AssertionError.class, () -> taskList.addTask(null));
+    }
+
+    @Test
+    public void undo_emptyHistory_exceptionThrown() {
+        DukeException exception = assertThrows(DukeException.class, () -> taskList.undo());
+        assertEquals("OOPS!!! There are no previous commands to undo.", exception.getMessage());
+    }
+
+    @Test
+    public void undo_afterSnapshot_revertsToPreviousState() throws DukeException {
+        taskList.addTask(todo);
+        taskList.saveSnapshot();
+
+        taskList.addTask(deadline);
+        assertEquals(2, taskList.size());
+
+        taskList.undo();
+        assertEquals(1, taskList.size());
+        assertEquals(todo.toString(), taskList.getTask(0).toString());
+    }
+
+    @Test
+    public void canUndo_withAndWithoutHistory_returnsCorrectBoolean() {
+        assertFalse(taskList.canUndo());
+        taskList.saveSnapshot();
+        assertTrue(taskList.canUndo());
+    }
+
+    @Test
+    public void copy_taskList_createsIndependentDeepCopy() throws DukeException {
+        taskList.addTask(todo);
+        TaskList cloned = taskList.copy();
+
+        assertEquals(1, cloned.size());
+        cloned.getTask(0).markAsDone();
+
+        assertTrue(cloned.getTask(0).isDone());
+        assertFalse(taskList.getTask(0).isDone());
+    }
+
+    @Test
+    public void copy_eventAndDeadline_createsIndependentCopies() throws DukeException {
+        Event event = new Event("project meeting", "2026-09-01 1400", "2026-09-01 1600");
+        Event eventCopy = event.copy();
+        assertEquals(event.toString(), eventCopy.toString());
+        eventCopy.markAsDone();
+        assertTrue(eventCopy.isDone());
+        assertFalse(event.isDone());
+
+        Deadline dl = new Deadline("submit quiz", "2026-09-02 2359");
+        Deadline dlCopy = dl.copy();
+        assertEquals(dl.toString(), dlCopy.toString());
+        dlCopy.markAsDone();
+        assertTrue(dlCopy.isDone());
+        assertFalse(dl.isDone());
     }
 }

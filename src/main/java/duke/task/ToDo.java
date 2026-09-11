@@ -22,4 +22,18 @@ public class ToDo extends Task {
     public String getTaskIcon() {
         return "T";
     }
+
+    /**
+     * Creates and returns a copy of this ToDo task.
+     *
+     * @return A copy of this ToDo task.
+     */
+    @Override
+    public ToDo copy() {
+        ToDo copy = new ToDo(getName());
+        if (isDone()) {
+            copy.markAsDone();
+        }
+        return copy;
+    }
 }

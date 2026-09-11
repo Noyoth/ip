@@ -32,6 +32,23 @@ public class Event extends Task {
     }
 
     /**
+     * Constructs an Event task with the given description, dates, and status.
+     *
+     * @param name      The description of the event task.
+     * @param startDate The start date/time.
+     * @param endDate   The end date/time.
+     * @param isDone    Whether the task is completed.
+     */
+    Event(String name, LocalDateTime startDate, LocalDateTime endDate, boolean isDone) {
+        super(name);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        if (isDone) {
+            markAsDone();
+        }
+    }
+
+    /**
      * Parses the date string into a LocalDateTime object.
      *
      * @param input The raw date string.
@@ -82,5 +99,15 @@ public class Event extends Task {
     public String toString() {
         return super.toString() + " (from: " + startDate.format(OUTPUT_FORMAT)
                 + " to: " + endDate.format(OUTPUT_FORMAT) + ")";
+    }
+
+    /**
+     * Creates and returns a copy of this Event task.
+     *
+     * @return A copy of this Event task.
+     */
+    @Override
+    public Event copy() {
+        return new Event(getName(), this.startDate, this.endDate, isDone());
     }
 }
