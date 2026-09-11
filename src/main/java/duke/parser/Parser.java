@@ -46,74 +46,77 @@ public class Parser {
             case "list":
                 return new ListCommand();
             case "mark":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The task number cannot be empty.");
-                }
-                try {
-                    int index = Integer.parseInt(parts[1]) - 1;
-                    return new MarkCommand(index);
-                } catch (NumberFormatException e) {
-                    throw new DukeException("OOPS!!! The task number provided is invalid.");
-                }
+                return new MarkCommand(parseTaskIndex(parts));
             case "unmark":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The task number cannot be empty.");
-                }
-                try {
-                    int index = Integer.parseInt(parts[1]) - 1;
-                    return new UnmarkCommand(index);
-                } catch (NumberFormatException e) {
-                    throw new DukeException("OOPS!!! The task number provided is invalid.");
-                }
+                return new UnmarkCommand(parseTaskIndex(parts));
             case "delete":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The task number cannot be empty.");
-                }
-                try {
-                    int index = Integer.parseInt(parts[1]) - 1;
-                    return new DeleteCommand(index);
-                } catch (NumberFormatException e) {
-                    throw new DukeException("OOPS!!! The task number provided is invalid.");
-                }
+                return new DeleteCommand(parseTaskIndex(parts));
             case "todo":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
-                }
-                String todoDesc = trimmed.substring(commandWord.length()).trim();
-                return new AddCommand(new ToDo(todoDesc));
+                return parseToDo(trimmed, commandWord);
             case "deadline":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The description of a deadline cannot be empty.");
-                }
-                String deadlineInput = trimmed.substring(commandWord.length()).trim();
-                String[] deadlineParts = deadlineInput.split(" /by ");
-                if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty()
-                        || deadlineParts[1].trim().isEmpty()) {
-                    throw new DukeException("OOPS!!! The description and /by time of a deadline cannot be empty.");
-                }
-                return new AddCommand(new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim()));
+                return parseDeadline(trimmed, commandWord);
             case "event":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The description of an event cannot be empty.");
-                }
-                String eventInput = trimmed.substring(commandWord.length()).trim();
-                String[] eventParts = eventInput.split(" /from ");
-                if (eventParts.length < 2 || eventParts[0].trim().isEmpty()) {
-                    throw new DukeException("OOPS!!! The description and /from time of an event cannot be empty.");
-                }
-                String[] timeParts = eventParts[1].split(" /to ");
-                if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
-                    throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
-                }
-                return new AddCommand(new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
+                return parseEvent(trimmed, commandWord);
             case "find":
-                if (parts.length < 2) {
-                    throw new DukeException("OOPS!!! The search keyword cannot be empty.");
-                }
-                String keyword = trimmed.substring(commandWord.length()).trim();
-                return new FindCommand(keyword);
+                return parseFind(trimmed, commandWord);
             default:
                 throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
+    }
+
+    private static int parseTaskIndex(String[] parts) throws DukeException {
+        if (parts.length < 2) {
+            throw new DukeException("OOPS!!! The task number cannot be empty.");
+        }
+        try {
+            return Integer.parseInt(parts[1]) - 1;
+        } catch (NumberFormatException e) {
+            throw new DukeException("OOPS!!! The task number provided is invalid.");
+        }
+    }
+
+    private static Command parseToDo(String trimmed, String commandWord) throws DukeException {
+        String todoDesc = trimmed.substring(commandWord.length()).trim();
+        if (todoDesc.isEmpty()) {
+            throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
+        }
+        return new AddCommand(new ToDo(todoDesc));
+    }
+
+    private static Command parseDeadline(String trimmed, String commandWord) throws DukeException {
+        String deadlineInput = trimmed.substring(commandWord.length()).trim();
+        if (deadlineInput.isEmpty()) {
+            throw new DukeException("OOPS!!! The description of a deadline cannot be empty.");
+        }
+        String[] deadlineParts = deadlineInput.split(" /by ");
+        if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty()
+                || deadlineParts[1].trim().isEmpty()) {
+            throw new DukeException("OOPS!!! The description and /by time of a deadline cannot be empty.");
+        }
+        return new AddCommand(new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim()));
+    }
+
+    private static Command parseEvent(String trimmed, String commandWord) throws DukeException {
+        String eventInput = trimmed.substring(commandWord.length()).trim();
+        if (eventInput.isEmpty()) {
+            throw new DukeException("OOPS!!! The description of an event cannot be empty.");
+        }
+        String[] eventParts = eventInput.split(" /from ");
+        if (eventParts.length < 2 || eventParts[0].trim().isEmpty()) {
+            throw new DukeException("OOPS!!! The description and /from time of an event cannot be empty.");
+        }
+        String[] timeParts = eventParts[1].split(" /to ");
+        if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
+            throw new DukeException("OOPS!!! The /to time of an event cannot be empty.");
+        }
+        return new AddCommand(new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
+    }
+
+    private static Command parseFind(String trimmed, String commandWord) throws DukeException {
+        String keyword = trimmed.substring(commandWord.length()).trim();
+        if (keyword.isEmpty()) {
+            throw new DukeException("OOPS!!! The search keyword cannot be empty.");
+        }
+        return new FindCommand(keyword);
     }
 }

@@ -2,6 +2,7 @@ package duke.task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import duke.exception.DukeException;
 
@@ -50,8 +51,8 @@ public class TaskList {
         assert tasksToAdd != null : "Tasks array must not be null";
         for (Task task : tasksToAdd) {
             assert task != null : "Task to add must not be null";
-            tasks.add(task);
         }
+        Collections.addAll(tasks, tasksToAdd);
     }
 
     /**

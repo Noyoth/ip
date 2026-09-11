@@ -46,32 +46,9 @@ public class Storage {
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
-                try {
-                    String[] parts = line.split("\\s*\\|\\s*");
-                    if (parts.length < 3) {
-                        continue;
-                    }
-                    String type = parts[0];
-                    boolean isDone = parts[1].equals("1");
-                    String name = parts[2];
-
-                    Task task = null;
-                    if (type.equals("T")) {
-                        task = new ToDo(name);
-                    } else if (type.equals("D") && parts.length >= 4) {
-                        task = new Deadline(name, parts[3]);
-                    } else if (type.equals("E") && parts.length >= 5) {
-                        task = new Event(name, parts[3], parts[4]);
-                    }
-
-                    if (task != null) {
-                        if (isDone) {
-                            task.markAsDone();
-                        }
-                        loadedTasks.add(task);
-                    }
-                } catch (Exception ex) {
-                    // Skip corrupt or unparseable line
+                Task task = parseTask(line);
+                if (task != null) {
+                    loadedTasks.add(task);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -80,6 +57,34 @@ public class Storage {
             throw new DukeException("Error loading tasks from file: " + e.getMessage());
         }
         return loadedTasks;
+    }
+
+    private Task parseTask(String line) {
+        try {
+            String[] parts = line.split("\\s*\\|\\s*");
+            if (parts.length < 3) {
+                return null;
+            }
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String name = parts[2];
+
+            Task task = null;
+            if (type.equals("T")) {
+                task = new ToDo(name);
+            } else if (type.equals("D") && parts.length >= 4) {
+                task = new Deadline(name, parts[3]);
+            } else if (type.equals("E") && parts.length >= 5) {
+                task = new Event(name, parts[3], parts[4]);
+            }
+
+            if (task != null && isDone) {
+                task.markAsDone();
+            }
+            return task;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     /**
