@@ -2,6 +2,7 @@ package duke.task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import duke.exception.DukeException;
 
@@ -44,9 +45,7 @@ public class TaskList {
      * @param tasksToAdd The tasks to add to the list.
      */
     public void addTasks(Task... tasksToAdd) {
-        for (Task task : tasksToAdd) {
-            tasks.add(task);
-        }
+        Collections.addAll(tasks, tasksToAdd);
     }
 
     /**
