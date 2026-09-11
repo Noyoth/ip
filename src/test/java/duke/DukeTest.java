@@ -1,6 +1,7 @@
 package duke;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
@@ -41,5 +42,10 @@ public class DukeTest {
     public void getResponse_emptyTodoDescription_returnsErrorMessage() {
         String response = duke.getResponse("todo");
         assertEquals("OOPS!!! The description of a todo cannot be empty.", response);
+    }
+
+    @Test
+    public void getResponse_nullInput_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> duke.getResponse(null));
     }
 }

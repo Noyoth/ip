@@ -131,4 +131,9 @@ public class ParserTest {
         DukeException exception = assertThrows(DukeException.class, () -> Parser.parse("invalidCommand"));
         assertEquals("OOPS!!! I'm sorry, but I don't know what that means :-(", exception.getMessage());
     }
+
+    @Test
+    public void parse_nullCommand_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> Parser.parse(null));
+    }
 }
