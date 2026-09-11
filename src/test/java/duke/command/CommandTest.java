@@ -98,4 +98,16 @@ public class CommandTest {
         command.execute(tasks, ui, storage);
         assertFalse(command.isExit());
     }
+
+    @Test
+    public void undoCommand_execute_revertsLastMutation() throws DukeException {
+        Task todo = new ToDo("read book");
+        Command addCommand = new AddCommand(todo);
+        addCommand.execute(tasks, ui, storage);
+        assertEquals(1, tasks.size());
+
+        Command undoCommand = new UndoCommand();
+        undoCommand.execute(tasks, ui, storage);
+        assertEquals(0, tasks.size());
+    }
 }

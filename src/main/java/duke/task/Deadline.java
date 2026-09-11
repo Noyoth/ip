@@ -29,6 +29,21 @@ public class Deadline extends Task {
     }
 
     /**
+     * Constructs a Deadline task with the given description, deadline date/time object, and status.
+     *
+     * @param name         The description of the deadline task.
+     * @param deadlineDate The deadline LocalDateTime object.
+     * @param isDone       Whether the task is completed.
+     */
+    Deadline(String name, LocalDateTime deadlineDate, boolean isDone) {
+        super(name);
+        this.deadlineDate = deadlineDate;
+        if (isDone) {
+            markAsDone();
+        }
+    }
+
+    /**
      * Parses the date string into a LocalDateTime object.
      *
      * @param input The raw date string.
@@ -78,5 +93,15 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return super.toString() + " (by: " + deadlineDate.format(OUTPUT_FORMAT) + ")";
+    }
+
+    /**
+     * Creates and returns a copy of this Deadline task.
+     *
+     * @return A copy of this Deadline task.
+     */
+    @Override
+    public Deadline copy() {
+        return new Deadline(getName(), this.deadlineDate, isDone());
     }
 }

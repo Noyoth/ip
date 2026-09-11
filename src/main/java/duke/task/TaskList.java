@@ -1,8 +1,10 @@
 package duke.task;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.stream.Collectors;
 
 import duke.exception.DukeException;
@@ -12,6 +14,7 @@ import duke.exception.DukeException;
  */
 public class TaskList {
     private final ArrayList<Task> tasks;
+    private final Deque<ArrayList<Task>> history = new ArrayDeque<>();
 
     /**
      * Constructs a TaskList initialized with the given tasks.
@@ -114,5 +117,52 @@ public class TaskList {
                 .filter(task -> task.toString().contains(keyword))
                 .collect(Collectors.toCollection(ArrayList::new));
         return new TaskList(matchingTasks);
+    }
+
+    /**
+     * Saves the current list state to the history stack for undo operations.
+     */
+    public void saveSnapshot() {
+        ArrayList<Task> snapshot = new ArrayList<>();
+        for (Task task : tasks) {
+            snapshot.add(task.copy());
+        }
+        history.push(snapshot);
+    }
+
+    /**
+     * Reverts the task list to its previous state.
+     *
+     * @throws DukeException If there is no previous state to revert to.
+     */
+    public void undo() throws DukeException {
+        if (history.isEmpty()) {
+            throw new DukeException("OOPS!!! There are no previous commands to undo.");
+        }
+        ArrayList<Task> previousState = history.pop();
+        tasks.clear();
+        tasks.addAll(previousState);
+    }
+
+    /**
+     * Returns whether there is an undo state available in history.
+     *
+     * @return True if undo is possible, false otherwise.
+     */
+    public boolean canUndo() {
+        return !history.isEmpty();
+    }
+
+    /**
+     * Creates and returns a deep copy of this TaskList.
+     *
+     * @return A deep copy of this TaskList.
+     */
+    public TaskList copy() {
+        ArrayList<Task> copiedTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            copiedTasks.add(task.copy());
+        }
+        return new TaskList(copiedTasks);
     }
 }

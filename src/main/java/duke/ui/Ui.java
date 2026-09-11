@@ -158,6 +158,18 @@ public class Ui {
     }
 
     /**
+     * Displays confirmation that the previous command has been undone.
+     *
+     * @param totalTasks The current total count of tasks after undoing.
+     */
+    public void showUndoSuccess(int totalTasks) {
+        showMessages(
+                "Got it. I've undone the previous command.",
+                "Now you have " + totalTasks + " tasks in the list."
+        );
+    }
+
+    /**
      * Displays the list of tasks matching a search keyword.
      *
      * @param matchingTasks The TaskList containing matched tasks.

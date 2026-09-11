@@ -40,4 +40,11 @@ public class UiTest {
     public void showMessages_nullMessages_throwsAssertionError() {
         assertThrows(AssertionError.class, () -> ui.showMessages((String[]) null));
     }
+
+    @Test
+    public void showUndoSuccess_outputsExpectedConfirmation() {
+        ui.showUndoSuccess(2);
+        assertEquals("Got it. I've undone the previous command.\nNow you have 2 tasks in the list.",
+                ui.getLastResponse());
+    }
 }
