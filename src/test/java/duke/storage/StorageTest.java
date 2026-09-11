@@ -1,6 +1,7 @@
 package duke.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -79,5 +80,16 @@ public class StorageTest {
         assertEquals("buy groceries", reloadedTasks.get(0).toString());
         assertEquals("X", reloadedTasks.get(1).getStatusIcon());
         assertEquals("E", reloadedTasks.get(2).getTaskIcon());
+    }
+
+    @Test
+    public void constructor_emptyFilePath_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> new Storage("   "));
+    }
+
+    @Test
+    public void save_nullTaskList_throwsAssertionError() {
+        Storage storage = new Storage("test.txt");
+        assertThrows(AssertionError.class, () -> storage.save((TaskList) null));
     }
 }
