@@ -7,6 +7,7 @@ import duke.command.ExitCommand;
 import duke.command.FindCommand;
 import duke.command.ListCommand;
 import duke.command.MarkCommand;
+import duke.command.UndoCommand;
 import duke.command.UnmarkCommand;
 import duke.exception.DukeException;
 import duke.task.Deadline;
@@ -59,6 +60,8 @@ public class Parser {
                 return parseEvent(trimmed, commandWord);
             case "find":
                 return parseFind(trimmed, commandWord);
+            case "undo":
+                return new UndoCommand();
             default:
                 throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }

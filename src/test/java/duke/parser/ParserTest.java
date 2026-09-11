@@ -14,6 +14,7 @@ import duke.command.ExitCommand;
 import duke.command.FindCommand;
 import duke.command.ListCommand;
 import duke.command.MarkCommand;
+import duke.command.UndoCommand;
 import duke.command.UnmarkCommand;
 import duke.exception.DukeException;
 
@@ -130,6 +131,12 @@ public class ParserTest {
     public void parse_unknownCommand_exceptionThrown() {
         DukeException exception = assertThrows(DukeException.class, () -> Parser.parse("invalidCommand"));
         assertEquals("OOPS!!! I'm sorry, but I don't know what that means :-(", exception.getMessage());
+    }
+
+    @Test
+    public void parse_undoCommand_returnsUndoCommand() throws DukeException {
+        Command command = Parser.parse("undo");
+        assertInstanceOf(UndoCommand.class, command);
     }
 
     @Test
