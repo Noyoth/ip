@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import duke.exception.DukeException;
+import duke.place.Place;
+import duke.place.PlaceList;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
@@ -91,5 +93,33 @@ public class StorageTest {
     public void save_nullTaskList_throwsAssertionError() {
         Storage storage = new Storage("test.txt");
         assertThrows(AssertionError.class, () -> storage.save((TaskList) null));
+    }
+
+    @Test
+    public void loadPlaces_nonExistentFile_returnsEmptyList() throws DukeException {
+        File file = tempDir.resolve("nonexistent_places.txt").toFile();
+        Storage storage = new Storage(tempDir.resolve("tasks.txt").toString(), file.getAbsolutePath());
+        PlaceList loaded = storage.loadPlaces();
+        assertEquals(0, loaded.size());
+    }
+
+    @Test
+    public void saveAndLoad_placeListRoundTrip_success() throws Exception {
+        File file = tempDir.resolve("places.txt").toFile();
+        Storage storage = new Storage(tempDir.resolve("tasks.txt").toString(), file.getAbsolutePath());
+
+        PlaceList placeList = new PlaceList();
+        placeList.addPlace(new Place("Marina Bay Sands", "SkyPark view"));
+        placeList.addPlace(new Place("Sentosa"));
+
+        storage.savePlaces(placeList);
+        assertTrue(file.exists());
+
+        PlaceList reloaded = storage.loadPlaces();
+        assertEquals(2, reloaded.size());
+        assertEquals("Marina Bay Sands", reloaded.getPlace(0).getName());
+        assertEquals("SkyPark view", reloaded.getPlace(0).getDetails());
+        assertEquals("Sentosa", reloaded.getPlace(1).getName());
+        assertEquals("", reloaded.getPlace(1).getDetails());
     }
 }
