@@ -45,10 +45,16 @@ public class Duke {
      * @return The response string produced by Duke.
      */
     public String getResponse(String input) {
+        assert input != null : "Input command must not be null";
+        assert tasks != null : "TaskList must be initialized";
+        assert ui != null : "Ui must be initialized";
+        assert storage != null : "Storage must be initialized";
         try {
             Command c = Parser.parse(input);
             c.execute(tasks, ui, storage);
-            return ui.getLastResponse();
+            String response = ui.getLastResponse();
+            assert response != null : "Response must not be null";
+            return response;
         } catch (DukeException e) {
             return e.getMessage();
         }

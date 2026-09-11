@@ -18,6 +18,7 @@ public class TaskList {
      * @param tasks The initial tasks to populate the list with.
      */
     public TaskList(Task... tasks) {
+        assert tasks != null : "Initial tasks array must not be null";
         this.tasks = new ArrayList<>(Arrays.asList(tasks));
     }
 
@@ -27,6 +28,7 @@ public class TaskList {
      * @param tasks The initial list of tasks.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "Initial tasks list must not be null";
         this.tasks = tasks;
     }
 
@@ -36,6 +38,7 @@ public class TaskList {
      * @param task The task to add.
      */
     public void addTask(Task task) {
+        assert task != null : "Task to add must not be null";
         tasks.add(task);
     }
 
@@ -45,6 +48,10 @@ public class TaskList {
      * @param tasksToAdd The tasks to add to the list.
      */
     public void addTasks(Task... tasksToAdd) {
+        assert tasksToAdd != null : "Tasks array must not be null";
+        for (Task task : tasksToAdd) {
+            assert task != null : "Task to add must not be null";
+        }
         Collections.addAll(tasks, tasksToAdd);
     }
 
@@ -101,6 +108,7 @@ public class TaskList {
      * @return A new TaskList containing matching tasks.
      */
     public TaskList findTasks(String keyword) {
+        assert keyword != null : "Search keyword must not be null";
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.toString().contains(keyword)) {

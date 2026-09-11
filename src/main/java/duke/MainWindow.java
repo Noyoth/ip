@@ -37,6 +37,15 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     public void initialize() {
+        assert scrollPane != null : "FXML injection failed: scrollPane is null";
+        assert dialogContainer != null : "FXML injection failed: dialogContainer is null";
+        assert userInput != null : "FXML injection failed: userInput is null";
+        assert sendButton != null : "FXML injection failed: sendButton is null";
+        assert themeButton != null : "FXML injection failed: themeButton is null";
+        assert mainPane != null : "FXML injection failed: mainPane is null";
+        assert userImage != null : "Resource loading failed: userImage is null";
+        assert tbcImage != null : "Resource loading failed: tbcImage is null";
+
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         dialogContainer.getChildren().add(
                 DialogBox.getTbcDialog("Hello! I'm TBC.\nWhat can I do for you?", tbcImage)
@@ -49,6 +58,7 @@ public class MainWindow extends AnchorPane {
      * @param d The Duke instance.
      */
     public void setDuke(Duke d) {
+        assert d != null : "Duke instance to inject must not be null";
         duke = d;
     }
 
@@ -73,8 +83,10 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+        assert duke != null : "Duke instance must be set before handling user input";
         String input = userInput.getText();
         String response = duke.getResponse(input);
+        assert response != null : "Duke response must not be null";
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getTbcDialog(response, tbcImage)
