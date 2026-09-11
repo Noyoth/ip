@@ -1,15 +1,20 @@
 package duke.parser;
 
 import duke.command.AddCommand;
+import duke.command.AddPlaceCommand;
 import duke.command.Command;
 import duke.command.DeleteCommand;
+import duke.command.DeletePlaceCommand;
 import duke.command.ExitCommand;
 import duke.command.FindCommand;
+import duke.command.FindPlaceCommand;
 import duke.command.ListCommand;
+import duke.command.ListPlacesCommand;
 import duke.command.MarkCommand;
 import duke.command.UndoCommand;
 import duke.command.UnmarkCommand;
 import duke.exception.DukeException;
+import duke.place.Place;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.ToDo;
@@ -62,6 +67,14 @@ public class Parser {
                 return parseFind(trimmed, commandWord);
             case "undo":
                 return new UndoCommand();
+            case "place":
+                return parsePlace(trimmed, commandWord);
+            case "places":
+                return new ListPlacesCommand();
+            case "deleteplace":
+                return new DeletePlaceCommand(parsePlaceIndex(parts));
+            case "findplace":
+                return parseFindPlace(trimmed, commandWord);
             default:
                 throw new DukeException("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
@@ -121,5 +134,49 @@ public class Parser {
             throw new DukeException("OOPS!!! The search keyword cannot be empty.");
         }
         return new FindCommand(keyword);
+    }
+
+    private static int parsePlaceIndex(String[] parts) throws DukeException {
+        if (parts.length < 2) {
+            throw new DukeException("OOPS!!! The place number cannot be empty.");
+        }
+        try {
+            return Integer.parseInt(parts[1]) - 1;
+        } catch (NumberFormatException e) {
+            throw new DukeException("OOPS!!! The place number provided is invalid.");
+        }
+    }
+
+    private static Command parsePlace(String trimmed, String commandWord) throws DukeException {
+        String placeInput = trimmed.substring(commandWord.length()).trim();
+        if (placeInput.isEmpty()) {
+            throw new DukeException("OOPS!!! The name of a place cannot be empty.");
+        }
+        String name;
+        String details = "";
+        if (placeInput.contains(" /details ")) {
+            String[] split = placeInput.split(" /details ", 2);
+            name = split[0].trim();
+            details = split.length > 1 ? split[1].trim() : "";
+        } else if (placeInput.contains(" /desc ")) {
+            String[] split = placeInput.split(" /desc ", 2);
+            name = split[0].trim();
+            details = split.length > 1 ? split[1].trim() : "";
+        } else {
+            name = placeInput;
+        }
+
+        if (name.isEmpty()) {
+            throw new DukeException("OOPS!!! The name of a place cannot be empty.");
+        }
+        return new AddPlaceCommand(new Place(name, details));
+    }
+
+    private static Command parseFindPlace(String trimmed, String commandWord) throws DukeException {
+        String keyword = trimmed.substring(commandWord.length()).trim();
+        if (keyword.isEmpty()) {
+            throw new DukeException("OOPS!!! The search keyword cannot be empty.");
+        }
+        return new FindPlaceCommand(keyword);
     }
 }

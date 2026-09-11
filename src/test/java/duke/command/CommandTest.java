@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import duke.exception.DukeException;
+import duke.place.Place;
 import duke.storage.Storage;
 import duke.task.Deadline;
 import duke.task.Task;
@@ -109,5 +110,48 @@ public class CommandTest {
         Command undoCommand = new UndoCommand();
         undoCommand.execute(tasks, ui, storage);
         assertEquals(0, tasks.size());
+    }
+
+    @Test
+    public void addPlaceCommand_execute_addsPlaceAndSaves() throws DukeException {
+        Place place = new Place("Sentosa", "Resort island");
+        Command command = new AddPlaceCommand(place);
+        command.execute(tasks, ui, storage);
+
+        assertEquals(1, storage.getPlaceList().size());
+        assertEquals(place, storage.getPlaceList().getPlace(0));
+    }
+
+    @Test
+    public void listPlacesCommand_execute_displaysPlaces() throws DukeException {
+        storage.getPlaceList().addPlace(new Place("Marina Bay Sands"));
+        Command command = new ListPlacesCommand();
+        command.execute(tasks, ui, storage);
+
+        assertEquals("Here are the places in your list:\n1. Marina Bay Sands", ui.getLastResponse());
+    }
+
+    @Test
+    public void deletePlaceCommand_execute_removesPlace() throws DukeException {
+        Place p1 = new Place("Place 1");
+        Place p2 = new Place("Place 2");
+        storage.getPlaceList().addPlace(p1);
+        storage.getPlaceList().addPlace(p2);
+
+        Command command = new DeletePlaceCommand(0);
+        command.execute(tasks, ui, storage);
+
+        assertEquals(1, storage.getPlaceList().size());
+        assertEquals(p2, storage.getPlaceList().getPlace(0));
+    }
+
+    @Test
+    public void findPlaceCommand_execute_success() throws DukeException {
+        storage.getPlaceList().addPlace(new Place("Changi Airport", "Jewel"));
+        Command command = new FindPlaceCommand("jewel");
+        command.execute(tasks, ui, storage);
+
+        assertEquals("Here are the matching places in your list:\n1. Changi Airport (details: Jewel)",
+                ui.getLastResponse());
     }
 }
