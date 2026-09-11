@@ -119,4 +119,9 @@ public class TaskListTest {
         assertEquals(todo, taskList.getTask(0));
         assertEquals(deadline, taskList.getTask(1));
     }
+
+    @Test
+    public void addTask_nullTask_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> taskList.addTask(null));
+    }
 }

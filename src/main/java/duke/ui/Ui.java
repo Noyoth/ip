@@ -44,6 +44,7 @@ public class Ui {
      * @param messages The message lines to display.
      */
     public void showMessages(String... messages) {
+        assert messages != null : "Messages array must not be null";
         Arrays.stream(messages).forEach(System.out::println);
         lastResponse = String.join("\n", messages);
     }

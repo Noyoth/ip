@@ -28,6 +28,7 @@ public class Storage {
      * @param filePath The path to the file used for loading and saving tasks.
      */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path must not be null or empty";
         this.filePath = filePath;
     }
 
@@ -90,6 +91,7 @@ public class Storage {
      * @throws DukeException If an I/O error occurs while saving.
      */
     public void save(TaskList taskList) throws DukeException {
+        assert taskList != null : "TaskList to save must not be null";
         save(taskList.getTasks());
     }
 
@@ -100,6 +102,7 @@ public class Storage {
      * @throws DukeException If an I/O error occurs while saving.
      */
     public void save(ArrayList<Task> tasks) throws DukeException {
+        assert tasks != null : "Tasks list to save must not be null";
         try {
             File file = new File(filePath);
             File parentDir = file.getParentFile();

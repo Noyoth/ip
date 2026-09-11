@@ -1,6 +1,7 @@
 package duke.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,5 +34,10 @@ public class UiTest {
     public void showMessages_varargsNoMessage_emptyResponse() {
         ui.showMessages();
         assertEquals("", ui.getLastResponse());
+    }
+
+    @Test
+    public void showMessages_nullMessages_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> ui.showMessages((String[]) null));
     }
 }

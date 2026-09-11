@@ -47,6 +47,7 @@ dependencies {
 }
 
 test {
+    enableAssertions = true
     useJUnitPlatform()
 
     testLogging {
@@ -62,6 +63,7 @@ test {
 
 application {
     mainClass = 'duke.Launcher'
+    applicationDefaultJvmArgs = ['-ea']
 }
 
 jar {
@@ -76,5 +78,6 @@ shadowJar {
 }
 
 run {
+    enableAssertions = true
     standardInput = System.in
 }

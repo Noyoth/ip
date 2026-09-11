@@ -31,6 +31,7 @@ public class Parser {
      * @throws DukeException If the command is invalid or missing required parameters.
      */
     public static Command parse(String fullCommand) throws DukeException {
+        assert fullCommand != null : "Command string must not be null";
         String trimmed = fullCommand.trim();
         if (trimmed.isEmpty()) {
             throw new DukeException("OOPS!!! Command cannot be empty.");
