@@ -43,6 +43,7 @@ public class Ui {
      * @param messages The message lines to display.
      */
     public void showMessages(String... messages) {
+        assert messages != null : "Messages array must not be null";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < messages.length; i++) {
             System.out.println(messages[i]);
