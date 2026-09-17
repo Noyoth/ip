@@ -35,6 +35,14 @@ public class PlaceListTest {
     }
 
     @Test
+    public void contains_existingAndNonExistingPlaces_returnsExpected() {
+        placeList.addPlace(restaurant);
+        org.junit.jupiter.api.Assertions.assertTrue(
+                placeList.contains(new Place("Jumbo Seafood", "Best chili crab")));
+        org.junit.jupiter.api.Assertions.assertFalse(placeList.contains(attraction));
+    }
+
+    @Test
     public void getPlace_validIndex_returnsPlace() throws DukeException {
         placeList.addPlace(restaurant);
         assertEquals(restaurant, placeList.getPlace(0));

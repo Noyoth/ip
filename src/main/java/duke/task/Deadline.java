@@ -104,4 +104,21 @@ public class Deadline extends Task {
     public Deadline copy() {
         return new Deadline(getName(), this.deadlineDate, isDone());
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        Deadline otherDeadline = (Deadline) other;
+        return getName().equals(otherDeadline.getName()) && deadlineDate.equals(otherDeadline.deadlineDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getName(), deadlineDate);
+    }
 }
