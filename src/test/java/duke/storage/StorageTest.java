@@ -150,4 +150,30 @@ public class StorageTest {
         DukeException ex = assertThrows(DukeException.class, () -> storage.savePlaces(new PlaceList()));
         assertTrue(ex.getMessage().contains("directory path"));
     }
+
+    @Test
+    public void loadPlaces_corruptedFileAndEmptyLines_skipsCorrupted() throws Exception {
+        File file = tempDir.resolve("corrupted_places.txt").toFile();
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("\n");
+            writer.write("   \n");
+            writer.write("Place Only\n");
+            writer.write("Place With | Details\n");
+            writer.write(" | missing name\n");
+        }
+        Storage storage = new Storage(tempDir.resolve("tasks.txt").toString(), file.getAbsolutePath());
+        PlaceList loaded = storage.loadPlaces();
+        assertEquals(2, loaded.size());
+        assertEquals("Place Only", loaded.getPlace(0).getName());
+        assertEquals("Place With", loaded.getPlace(1).getName());
+        assertEquals("Details", loaded.getPlace(1).getDetails());
+    }
+
+    @Test
+    public void setPlaceList_nullArgument_throwsAssertionError() {
+        Storage storage = new Storage("tasks.txt", "places.txt");
+        assertThrows(AssertionError.class, () -> storage.setPlaceList(null));
+        assertThrows(AssertionError.class, () -> storage.savePlaces(null));
+        assertThrows(AssertionError.class, () -> storage.save((java.util.ArrayList<Task>) null));
+    }
 }

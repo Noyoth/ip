@@ -188,4 +188,22 @@ public class TaskListTest {
         assertTrue(dlCopy.isDone());
         assertFalse(dl.isDone());
     }
+
+    @Test
+    public void getTasks_returnsUnderlyingList() {
+        taskList.addTask(todo);
+        assertEquals(1, taskList.getTasks().size());
+        assertEquals(todo, taskList.getTasks().get(0));
+    }
+
+    @Test
+    public void constructor_nullArguments_throwsAssertionError() {
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> new TaskList((Task[]) null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () ->
+                new TaskList((java.util.ArrayList<Task>) null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> taskList.contains(null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> taskList.findTasks(null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> taskList.addTasks((Task[]) null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> taskList.addTasks(new Task[]{null}));
+    }
 }

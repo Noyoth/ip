@@ -93,4 +93,77 @@ public class UiTest {
         assertEquals("Here are the matching places in your list:\n1. Marina Bay Sands",
                 ui.getLastResponse());
     }
+
+    @Test
+    public void showWelcome_formatsCorrectly() {
+        ui.showWelcome();
+        assertEquals("Hello! I'm TBC.\nWhat can I do for you?", ui.getLastResponse());
+    }
+
+    @Test
+    public void showGoodbye_formatsCorrectly() {
+        ui.showGoodbye();
+        assertEquals("Bye bye.", ui.getLastResponse());
+    }
+
+    @Test
+    public void showError_formatsCorrectly() {
+        ui.showError("Custom error");
+        assertEquals("Custom error", ui.getLastResponse());
+    }
+
+    @Test
+    public void showLoadingError_formatsCorrectly() {
+        ui.showLoadingError();
+        assertEquals("Error while loading tasks: file could not be loaded.", ui.getLastResponse());
+    }
+
+    @Test
+    public void showTaskList_emptyAndNonEmpty_formatsCorrectly() {
+        duke.task.TaskList tasks = new duke.task.TaskList();
+        ui.showTaskList(tasks);
+        assertEquals("There are no tasks in your list.", ui.getLastResponse());
+
+        tasks.addTask(new duke.task.ToDo("read book"));
+        ui.showTaskList(tasks);
+        assertEquals("1. [T][ ] read book", ui.getLastResponse());
+    }
+
+    @Test
+    public void showTaskAdded_formatsCorrectly() {
+        duke.task.Task task = new duke.task.ToDo("read book");
+        ui.showTaskAdded(task, 1);
+        String expected = "Got it. I've added this task:\n  [T][ ] read book\nNow you have 1 tasks in the list.";
+        assertEquals(expected, ui.getLastResponse());
+    }
+
+    @Test
+    public void showTaskDeleted_formatsCorrectly() {
+        duke.task.Task task = new duke.task.ToDo("read book");
+        ui.showTaskDeleted(task, 0);
+        String expected = "Noted. I've removed this task:\n  [T][ ] read book\nNow you have 0 tasks in the list.";
+        assertEquals(expected, ui.getLastResponse());
+    }
+
+    @Test
+    public void showTaskMarked_formatsCorrectly() {
+        duke.task.Task task = new duke.task.ToDo("read book");
+        task.markAsDone();
+        ui.showTaskMarked(task);
+        assertEquals("Nice! I've marked this task as done:\n  [T][X] read book", ui.getLastResponse());
+    }
+
+    @Test
+    public void showTaskUnmarked_formatsCorrectly() {
+        duke.task.Task task = new duke.task.ToDo("read book");
+        ui.showTaskUnmarked(task);
+        assertEquals("OK, I've marked this task as not done yet:\n  [T][ ] read book", ui.getLastResponse());
+    }
+
+    @Test
+    public void showFoundTasks_displaysMatchingTasks() {
+        duke.task.TaskList tasks = new duke.task.TaskList(new duke.task.ToDo("read book"));
+        ui.showFoundTasks(tasks);
+        assertEquals("Here are the matching tasks in your list:\n1. [T][ ] read book", ui.getLastResponse());
+    }
 }
