@@ -143,12 +143,50 @@ public class CommandTest {
     }
 
     @Test
-    public void listPlacesCommand_execute_displaysPlaces() throws DukeException {
-        storage.getPlaceList().addPlace(new Place("Marina Bay Sands"));
-        Command command = new ListPlacesCommand();
-        command.execute(tasks, ui, storage);
+    public void markCommand_invalidIndex_exceptionThrown() {
+        Command command = new MarkCommand(0);
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                command.execute(tasks, ui, storage));
+    }
 
-        assertEquals("Here are the places in your list:\n1. Marina Bay Sands", ui.getLastResponse());
+    @Test
+    public void unmarkCommand_invalidIndex_exceptionThrown() {
+        Command command = new UnmarkCommand(0);
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                command.execute(tasks, ui, storage));
+    }
+
+    @Test
+    public void deleteCommand_invalidIndex_exceptionThrown() {
+        Command command = new DeleteCommand(0);
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                command.execute(tasks, ui, storage));
+    }
+
+    @Test
+    public void listCommand_execute_displaysTasks() throws DukeException {
+        Command listCommand = new ListCommand();
+        listCommand.execute(tasks, ui, storage);
+        assertEquals("There are no tasks in your list.", ui.getLastResponse());
+
+        tasks.addTask(new ToDo("read book"));
+        listCommand.execute(tasks, ui, storage);
+        assertEquals("1. [T][ ] read book", ui.getLastResponse());
+    }
+
+    @Test
+    public void findCommand_noMatches_displaysEmptyList() throws DukeException {
+        tasks.addTask(new ToDo("read book"));
+        Command command = new FindCommand("swimming");
+        command.execute(tasks, ui, storage);
+        assertEquals("Here are the matching tasks in your list:", ui.getLastResponse());
+    }
+
+    @Test
+    public void undoCommand_emptyHistory_exceptionThrown() {
+        Command undoCommand = new UndoCommand();
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                undoCommand.execute(tasks, ui, storage));
     }
 
     @Test
@@ -166,6 +204,22 @@ public class CommandTest {
     }
 
     @Test
+    public void deletePlaceCommand_invalidIndex_exceptionThrown() {
+        Command command = new DeletePlaceCommand(0);
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                command.execute(tasks, ui, storage));
+    }
+
+    @Test
+    public void listPlacesCommand_execute_displaysPlaces() throws DukeException {
+        storage.getPlaceList().addPlace(new Place("Marina Bay Sands"));
+        Command command = new ListPlacesCommand();
+        command.execute(tasks, ui, storage);
+
+        assertEquals("Here are the places in your list:\n1. Marina Bay Sands", ui.getLastResponse());
+    }
+
+    @Test
     public void findPlaceCommand_execute_success() throws DukeException {
         storage.getPlaceList().addPlace(new Place("Changi Airport", "Jewel"));
         Command command = new FindPlaceCommand("jewel");
@@ -173,5 +227,13 @@ public class CommandTest {
 
         assertEquals("Here are the matching places in your list:\n1. Changi Airport (details: Jewel)",
                 ui.getLastResponse());
+    }
+
+    @Test
+    public void findPlaceCommand_noMatches_displaysEmptyMessage() throws DukeException {
+        storage.getPlaceList().addPlace(new Place("Sentosa"));
+        Command command = new FindPlaceCommand("airport");
+        command.execute(tasks, ui, storage);
+        assertEquals("There are no matching places found.", ui.getLastResponse());
     }
 }
