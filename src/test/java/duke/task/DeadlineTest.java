@@ -92,4 +92,18 @@ public class DeadlineTest {
         deadline.markAsNotDone();
         assertEquals(" ", deadline.getStatusIcon());
     }
+
+    @Test
+    public void equals_andHashCode_operateCorrectly() throws DukeException {
+        Deadline d1 = new Deadline("submit report", "2026-09-01 1800");
+        Deadline d2 = new Deadline("submit report", "2026-09-01 1800");
+        Deadline d3 = new Deadline("other report", "2026-09-01 1800");
+        Deadline d4 = new Deadline("submit report", "2026-09-02 1800");
+
+        assertEquals(d1, d2);
+        assertEquals(d1.hashCode(), d2.hashCode());
+        org.junit.jupiter.api.Assertions.assertNotEquals(d1, d3);
+        org.junit.jupiter.api.Assertions.assertNotEquals(d1, d4);
+        org.junit.jupiter.api.Assertions.assertNotEquals(d1, null);
+    }
 }

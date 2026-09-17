@@ -23,12 +23,15 @@ public class Event extends Task {
      * @param name      The description of the event task.
      * @param startTime The start date/time string (yyyy-MM-dd or yyyy-MM-dd HHmm).
      * @param endTime   The end date/time string (yyyy-MM-dd or yyyy-MM-dd HHmm).
-     * @throws DukeException If any date/time string format is invalid.
+     * @throws DukeException If any date/time string format is invalid or start time is after end time.
      */
     public Event(String name, String startTime, String endTime) throws DukeException {
         super(name);
         this.startDate = parseDateTime(startTime);
         this.endDate = parseDateTime(endTime);
+        if (this.startDate.isAfter(this.endDate)) {
+            throw new DukeException("OOPS!!! The event start time cannot be after the end time.");
+        }
     }
 
     /**
@@ -38,9 +41,13 @@ public class Event extends Task {
      * @param startDate The start date/time.
      * @param endDate   The end date/time.
      * @param isDone    Whether the task is completed.
+     * @throws DukeException If the start time is after the end time.
      */
-    Event(String name, LocalDateTime startDate, LocalDateTime endDate, boolean isDone) {
+    Event(String name, LocalDateTime startDate, LocalDateTime endDate, boolean isDone) throws DukeException {
         super(name);
+        if (startDate.isAfter(endDate)) {
+            throw new DukeException("OOPS!!! The event start time cannot be after the end time.");
+        }
         this.startDate = startDate;
         this.endDate = endDate;
         if (isDone) {
@@ -108,6 +115,29 @@ public class Event extends Task {
      */
     @Override
     public Event copy() {
-        return new Event(getName(), this.startDate, this.endDate, isDone());
+        try {
+            return new Event(getName(), this.startDate, this.endDate, isDone());
+        } catch (DukeException e) {
+            throw new AssertionError("Validated dates in Event should not fail copy", e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        Event otherEvent = (Event) other;
+        return getName().equals(otherEvent.getName())
+                && startDate.equals(otherEvent.startDate)
+                && endDate.equals(otherEvent.endDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getName(), startDate, endDate);
     }
 }

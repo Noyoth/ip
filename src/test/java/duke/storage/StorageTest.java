@@ -122,4 +122,32 @@ public class StorageTest {
         assertEquals("Sentosa", reloaded.getPlace(1).getName());
         assertEquals("", reloaded.getPlace(1).getDetails());
     }
+
+    @Test
+    public void load_directoryPath_exceptionThrown() {
+        Storage storage = new Storage(tempDir.toAbsolutePath().toString());
+        DukeException ex = assertThrows(DukeException.class, storage::load);
+        assertTrue(ex.getMessage().contains("is a directory"));
+    }
+
+    @Test
+    public void save_directoryPath_exceptionThrown() {
+        Storage storage = new Storage(tempDir.toAbsolutePath().toString());
+        DukeException ex = assertThrows(DukeException.class, () -> storage.save(new TaskList()));
+        assertTrue(ex.getMessage().contains("directory path"));
+    }
+
+    @Test
+    public void loadPlaces_directoryPath_exceptionThrown() {
+        Storage storage = new Storage(tempDir.resolve("tasks.txt").toString(), tempDir.toAbsolutePath().toString());
+        DukeException ex = assertThrows(DukeException.class, storage::loadPlaces);
+        assertTrue(ex.getMessage().contains("is a directory"));
+    }
+
+    @Test
+    public void savePlaces_directoryPath_exceptionThrown() {
+        Storage storage = new Storage(tempDir.resolve("tasks.txt").toString(), tempDir.toAbsolutePath().toString());
+        DukeException ex = assertThrows(DukeException.class, () -> storage.savePlaces(new PlaceList()));
+        assertTrue(ex.getMessage().contains("directory path"));
+    }
 }

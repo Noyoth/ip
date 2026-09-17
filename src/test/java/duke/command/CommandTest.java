@@ -50,6 +50,16 @@ public class CommandTest {
     }
 
     @Test
+    public void addCommand_duplicateTask_exceptionThrown() throws DukeException {
+        Task todo = new ToDo("read book");
+        new AddCommand(todo).execute(tasks, ui, storage);
+
+        Task duplicate = new ToDo("read book");
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                new AddCommand(duplicate).execute(tasks, ui, storage));
+    }
+
+    @Test
     public void markCommand_execute_marksTaskAsDone() throws DukeException {
         Task todo = new ToDo("read book");
         tasks.addTask(todo);
@@ -120,6 +130,16 @@ public class CommandTest {
 
         assertEquals(1, storage.getPlaceList().size());
         assertEquals(place, storage.getPlaceList().getPlace(0));
+    }
+
+    @Test
+    public void addPlaceCommand_duplicatePlace_exceptionThrown() throws DukeException {
+        Place place = new Place("Sentosa", "Resort island");
+        new AddPlaceCommand(place).execute(tasks, ui, storage);
+
+        Place duplicate = new Place("Sentosa", "Resort island");
+        org.junit.jupiter.api.Assertions.assertThrows(DukeException.class, () ->
+                new AddPlaceCommand(duplicate).execute(tasks, ui, storage));
     }
 
     @Test

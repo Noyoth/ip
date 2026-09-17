@@ -34,6 +34,9 @@ public class AddPlaceCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {
         PlaceList places = storage.getPlaceList();
+        if (places.contains(place)) {
+            throw new DukeException("OOPS!!! This place already exists in your list.");
+        }
         places.saveSnapshot();
         places.addPlace(place);
         storage.savePlaces(places);

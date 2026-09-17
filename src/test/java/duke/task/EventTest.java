@@ -55,4 +55,23 @@ public class EventTest {
         event.markAsDone();
         assertEquals("E | 1 | meeting | 2026-09-01T14:00 | 2026-09-01T16:00", event.toFileFormat());
     }
+
+    @Test
+    public void constructor_startAfterEnd_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () ->
+                new Event("meeting", "2026-09-02 1400", "2026-09-01 1400"));
+        assertEquals("OOPS!!! The event start time cannot be after the end time.", ex.getMessage());
+    }
+
+    @Test
+    public void equals_andHashCode_operateCorrectly() throws DukeException {
+        Event event1 = new Event("meeting", "2026-09-01 1400", "2026-09-01 1600");
+        Event event2 = new Event("meeting", "2026-09-01 1400", "2026-09-01 1600");
+        Event event3 = new Event("diff", "2026-09-01 1400", "2026-09-01 1600");
+
+        assertEquals(event1, event2);
+        assertEquals(event1.hashCode(), event2.hashCode());
+        org.junit.jupiter.api.Assertions.assertNotEquals(event1, event3);
+        org.junit.jupiter.api.Assertions.assertNotEquals(event1, null);
+    }
 }

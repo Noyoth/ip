@@ -33,4 +33,16 @@ public class ToDoTest {
         ToDo todo = new ToDo("read book");
         assertEquals("read book", todo.toString());
     }
+
+    @Test
+    public void equals_andHashCode_operateCorrectly() {
+        ToDo t1 = new ToDo("read book");
+        ToDo t2 = new ToDo("read book");
+        ToDo t3 = new ToDo("other book");
+
+        assertEquals(t1, t2);
+        assertEquals(t1.hashCode(), t2.hashCode());
+        org.junit.jupiter.api.Assertions.assertNotEquals(t1, t3);
+        org.junit.jupiter.api.Assertions.assertNotEquals(t1, null);
+    }
 }

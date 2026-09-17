@@ -35,6 +35,13 @@ public class TaskListTest {
     }
 
     @Test
+    public void contains_existingAndNonExistingTasks_returnsExpected() {
+        taskList.addTask(todo);
+        org.junit.jupiter.api.Assertions.assertTrue(taskList.contains(new ToDo("read book")));
+        org.junit.jupiter.api.Assertions.assertFalse(taskList.contains(deadline));
+    }
+
+    @Test
     public void getTask_validIndex_returnsCorrectTask() throws DukeException {
         taskList.addTask(todo);
         taskList.addTask(deadline);

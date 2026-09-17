@@ -53,6 +53,17 @@ public class PlaceList {
     }
 
     /**
+     * Checks if the place list contains the specified place.
+     *
+     * @param place The place to search for.
+     * @return True if the place list contains the place, false otherwise.
+     */
+    public boolean contains(Place place) {
+        assert place != null : "Place to check must not be null";
+        return places.contains(place);
+    }
+
+    /**
      * Deletes a place from the list at the specified index.
      *
      * @param index The 0-based index of the place to delete.

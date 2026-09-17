@@ -60,6 +60,17 @@ public class TaskList {
     }
 
     /**
+     * Checks if the task list contains the specified task.
+     *
+     * @param task The task to search for.
+     * @return True if the task list contains the task, false otherwise.
+     */
+    public boolean contains(Task task) {
+        assert task != null : "Task to check must not be null";
+        return tasks.contains(task);
+    }
+
+    /**
      * Deletes a task from the list at the specified index.
      *
      * @param index The 0-based index of the task to delete.

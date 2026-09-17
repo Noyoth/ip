@@ -192,6 +192,90 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_taskIndexZeroOrNegative_exceptionThrown() {
+        DukeException ex1 = assertThrows(DukeException.class, () -> Parser.parse("mark 0"));
+        assertEquals("OOPS!!! The task number must be greater than 0.", ex1.getMessage());
+
+        DukeException ex2 = assertThrows(DukeException.class, () -> Parser.parse("delete -1"));
+        assertEquals("OOPS!!! The task number must be greater than 0.", ex2.getMessage());
+    }
+
+    @Test
+    public void parse_taskIndexTrailingTokens_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () -> Parser.parse("mark 1 2"));
+        assertEquals("OOPS!!! Please provide only a single task number.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_placeIndexZeroOrNegative_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () -> Parser.parse("deleteplace 0"));
+        assertEquals("OOPS!!! The place number must be greater than 0.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_placeIndexTrailingTokens_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () -> Parser.parse("deleteplace 1 extra"));
+        assertEquals("OOPS!!! Please provide only a single place number.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_pipeInInput_exceptionThrown() {
+        DukeException ex1 = assertThrows(DukeException.class, () -> Parser.parse("todo read | book"));
+        assertTrue(ex1.getMessage().contains("reserved and cannot be used"));
+
+        DukeException ex2 = assertThrows(DukeException.class, () ->
+                Parser.parse("deadline submit | report /by 2026-09-01 1800"));
+        assertTrue(ex2.getMessage().contains("reserved and cannot be used"));
+
+        DukeException ex3 = assertThrows(DukeException.class, () ->
+                Parser.parse("place Library | Central /details 3rd floor"));
+        assertTrue(ex3.getMessage().contains("reserved and cannot be used"));
+
+        DukeException ex4 = assertThrows(DukeException.class, () -> Parser.parse("find test|pipe"));
+        assertTrue(ex4.getMessage().contains("reserved and cannot be used"));
+    }
+
+    @Test
+    public void parse_duplicateDeadlineFlags_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () ->
+                Parser.parse("deadline return book /by 2026-09-01 1800 /by 2026-09-02 1800"));
+        assertEquals("OOPS!!! Multiple /by parameters are not allowed.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_duplicateEventFlags_exceptionThrown() {
+        DukeException ex1 = assertThrows(DukeException.class, () ->
+                Parser.parse("event trip /from 2026-09-01 1000 /from 2026-09-01 1100 /to 2026-09-01 1200"));
+        assertEquals("OOPS!!! Multiple /from parameters are not allowed.", ex1.getMessage());
+
+        DukeException ex2 = assertThrows(DukeException.class, () ->
+                Parser.parse("event trip /from 2026-09-01 1000 /to 2026-09-01 1200 /to 2026-09-01 1300"));
+        assertEquals("OOPS!!! Multiple /to parameters are not allowed.", ex2.getMessage());
+    }
+
+    @Test
+    public void parse_eventOrderReversed_exceptionThrown() {
+        DukeException ex = assertThrows(DukeException.class, () ->
+                Parser.parse("event concert /to 2026-09-01 2200 /from 2026-09-01 1900"));
+        assertEquals("OOPS!!! The /from parameter must appear before the /to parameter.", ex.getMessage());
+    }
+
+    @Test
+    public void parse_placeMultipleOrConflictingDetailsFlags_exceptionThrown() {
+        DukeException ex1 = assertThrows(DukeException.class, () ->
+                Parser.parse("place Park /details Area 1 /details Area 2"));
+        assertEquals("OOPS!!! Multiple /details parameters are not allowed.", ex1.getMessage());
+
+        DukeException ex2 = assertThrows(DukeException.class, () ->
+                Parser.parse("place Park /desc Area 1 /desc Area 2"));
+        assertEquals("OOPS!!! Multiple /desc parameters are not allowed.", ex2.getMessage());
+
+        DukeException ex3 = assertThrows(DukeException.class, () ->
+                Parser.parse("place Park /details Area 1 /desc Area 2"));
+        assertEquals("OOPS!!! Cannot specify both /details and /desc.", ex3.getMessage());
+    }
+
+    @Test
     public void parse_nullCommand_throwsAssertionError() {
         assertThrows(AssertionError.class, () -> Parser.parse(null));
     }
