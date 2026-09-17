@@ -41,9 +41,20 @@ public class PlaceTest {
         Place place1 = new Place("Place A", "Details A");
         Place place2 = new Place("Place A", "Details A");
         Place place3 = new Place("Place B", "Details A");
+        Place place4 = new Place("Place A", "Details B");
 
         assertEquals(place1, place2);
+        assertEquals(place1, place1);
         assertNotEquals(place1, place3);
+        assertNotEquals(place1, place4);
+        assertNotEquals(place1, null);
         assertNotEquals(place1, "Not a Place");
+    }
+
+    @Test
+    public void constructor_nullOrEmptyName_throwsAssertionError() {
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> new Place(null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> new Place("   "));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> new Place("Place", null));
     }
 }

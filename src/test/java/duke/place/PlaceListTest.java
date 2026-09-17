@@ -123,5 +123,17 @@ public class PlaceListTest {
 
         PlaceList copied = listFromVarargs.copy();
         assertEquals(2, copied.size());
+        assertEquals(2, listFromVarargs.getPlaces().size());
+    }
+
+    @Test
+    public void nullArguments_throwAssertionErrors() {
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () ->
+                new PlaceList((Place[]) null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () ->
+                new PlaceList((ArrayList<Place>) null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> placeList.addPlace(null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> placeList.contains(null));
+        org.junit.jupiter.api.Assertions.assertThrows(AssertionError.class, () -> placeList.findPlaces(null));
     }
 }
