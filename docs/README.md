@@ -176,3 +176,105 @@ Reverts the most recent task list or place list mutation (such as an addition, d
   Got it. I've undone the previous command.
   Now you have 3 tasks in the list.
   ```
+
+---
+
+## Place Management Features
+
+### Adding a Place: `place`
+
+Adds a location bookmark with optional descriptive details or notes.
+
+* **Format**: `place NAME [/details DETAILS]` or `place NAME [/desc DETAILS]`
+* **Parameters**:
+  * `NAME`: Non-empty place name.
+  * `DETAILS`: Optional descriptive notes or address.
+* **Examples**:
+  * `place Sentosa`
+  * `place Jumbo Seafood /details Clark Quay, chili crab`
+* **Expected Output**:
+  ```text
+  Got it. I've added this place:
+    Jumbo Seafood (details: Clark Quay, chili crab)
+  Now you have 1 places in the list.
+  ```
+
+### Listing All Places: `places`
+
+Displays all saved places currently in your place list.
+
+* **Format**: `places`
+* **Expected Output**:
+  ```text
+  Here are the places in your list:
+  1. Sentosa
+  2. Jumbo Seafood (details: Clark Quay, chili crab)
+  ```
+
+### Searching Places: `findplace`
+
+Searches places by keyword across both place names and details (case-insensitive search).
+
+* **Format**: `findplace KEYWORD`
+* **Example**: `findplace crab`
+* **Expected Output**:
+  ```text
+  Here are the matching places in your list:
+  1. Jumbo Seafood (details: Clark Quay, chili crab)
+  ```
+
+### Deleting a Place: `deleteplace`
+
+Removes the place at the specified index from the place list.
+
+* **Format**: `deleteplace INDEX`
+* **Example**: `deleteplace 1`
+* **Expected Output**:
+  ```text
+  Noted. I've removed this place:
+    Sentosa
+  Now you have 1 places in the list.
+  ```
+
+---
+
+## General Features
+
+### Exiting the Application: `bye`
+
+Exits the session and terminates the chatbot application.
+
+* **Format**: `bye`
+* **Expected Output**:
+  ```text
+  Bye bye.
+  ```
+
+### Data Persistence
+
+All tasks and places are automatically saved to local text files after each mutating command:
+* **Tasks**: saved to `./data/duke.txt`
+* **Places**: saved to `./data/places.txt`
+
+Data files are created automatically if they do not exist. Any existing saved records are loaded when the application launches.
+
+---
+
+## Command Summary
+
+| Action | Format | Example |
+| :--- | :--- | :--- |
+| **Add To-Do** | `todo DESCRIPTION` | `todo read book` |
+| **Add Deadline** | `deadline DESCRIPTION /by DATE_TIME` | `deadline return book /by 2026-10-15 1800` |
+| **Add Event** | `event DESCRIPTION /from START /to END` | `event workshop /from 2026-10-16 1400 /to 2026-10-16 1600` |
+| **List Tasks** | `list` | `list` |
+| **Mark Task** | `mark INDEX` | `mark 1` |
+| **Unmark Task** | `unmark INDEX` | `unmark 1` |
+| **Delete Task** | `delete INDEX` | `delete 2` |
+| **Find Task** | `find KEYWORD` | `find assignment` |
+| **Undo Mutation** | `undo` | `undo` |
+| **Add Place** | `place NAME [/details DETAILS]` | `place Sentosa /details Island resort` |
+| **List Places** | `places` | `places` |
+| **Find Place** | `findplace KEYWORD` | `findplace resort` |
+| **Delete Place** | `deleteplace INDEX` | `deleteplace 1` |
+| **Exit** | `bye` | `bye` |
