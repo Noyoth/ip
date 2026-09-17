@@ -84,8 +84,15 @@ public class Parser {
         if (parts.length < 2) {
             throw new DukeException("OOPS!!! The task number cannot be empty.");
         }
+        if (parts.length > 2) {
+            throw new DukeException("OOPS!!! Please provide only a single task number.");
+        }
         try {
-            return Integer.parseInt(parts[1]) - 1;
+            int index = Integer.parseInt(parts[1]);
+            if (index <= 0) {
+                throw new DukeException("OOPS!!! The task number must be greater than 0.");
+            }
+            return index - 1;
         } catch (NumberFormatException e) {
             throw new DukeException("OOPS!!! The task number provided is invalid.");
         }
@@ -96,6 +103,7 @@ public class Parser {
         if (todoDesc.isEmpty()) {
             throw new DukeException("OOPS!!! The description of a todo cannot be empty.");
         }
+        validateNoPipe(todoDesc, "description");
         return new AddCommand(new ToDo(todoDesc));
     }
 
@@ -104,6 +112,12 @@ public class Parser {
         if (deadlineInput.isEmpty()) {
             throw new DukeException("OOPS!!! The description of a deadline cannot be empty.");
         }
+        validateNoPipe(deadlineInput, "deadline details");
+
+        if (countOccurrences(deadlineInput, " /by ") > 1) {
+            throw new DukeException("OOPS!!! Multiple /by parameters are not allowed.");
+        }
+
         String[] deadlineParts = deadlineInput.split(" /by ");
         if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty()
                 || deadlineParts[1].trim().isEmpty()) {
@@ -117,6 +131,21 @@ public class Parser {
         if (eventInput.isEmpty()) {
             throw new DukeException("OOPS!!! The description of an event cannot be empty.");
         }
+        validateNoPipe(eventInput, "event details");
+
+        if (countOccurrences(eventInput, " /from ") > 1) {
+            throw new DukeException("OOPS!!! Multiple /from parameters are not allowed.");
+        }
+        if (countOccurrences(eventInput, " /to ") > 1) {
+            throw new DukeException("OOPS!!! Multiple /to parameters are not allowed.");
+        }
+
+        int fromIndex = eventInput.indexOf(" /from ");
+        int toIndex = eventInput.indexOf(" /to ");
+        if (fromIndex != -1 && toIndex != -1 && toIndex < fromIndex) {
+            throw new DukeException("OOPS!!! The /from parameter must appear before the /to parameter.");
+        }
+
         String[] eventParts = eventInput.split(" /from ");
         if (eventParts.length < 2 || eventParts[0].trim().isEmpty()) {
             throw new DukeException("OOPS!!! The description and /from time of an event cannot be empty.");
@@ -133,6 +162,7 @@ public class Parser {
         if (keyword.isEmpty()) {
             throw new DukeException("OOPS!!! The search keyword cannot be empty.");
         }
+        validateNoPipe(keyword, "search keyword");
         return new FindCommand(keyword);
     }
 
@@ -140,8 +170,15 @@ public class Parser {
         if (parts.length < 2) {
             throw new DukeException("OOPS!!! The place number cannot be empty.");
         }
+        if (parts.length > 2) {
+            throw new DukeException("OOPS!!! Please provide only a single place number.");
+        }
         try {
-            return Integer.parseInt(parts[1]) - 1;
+            int index = Integer.parseInt(parts[1]);
+            if (index <= 0) {
+                throw new DukeException("OOPS!!! The place number must be greater than 0.");
+            }
+            return index - 1;
         } catch (NumberFormatException e) {
             throw new DukeException("OOPS!!! The place number provided is invalid.");
         }
@@ -152,13 +189,27 @@ public class Parser {
         if (placeInput.isEmpty()) {
             throw new DukeException("OOPS!!! The name of a place cannot be empty.");
         }
+        validateNoPipe(placeInput, "place details");
+
+        boolean hasDetails = placeInput.contains(" /details ");
+        boolean hasDesc = placeInput.contains(" /desc ");
+        if (hasDetails && hasDesc) {
+            throw new DukeException("OOPS!!! Cannot specify both /details and /desc.");
+        }
+        if (countOccurrences(placeInput, " /details ") > 1) {
+            throw new DukeException("OOPS!!! Multiple /details parameters are not allowed.");
+        }
+        if (countOccurrences(placeInput, " /desc ") > 1) {
+            throw new DukeException("OOPS!!! Multiple /desc parameters are not allowed.");
+        }
+
         String name;
         String details = "";
-        if (placeInput.contains(" /details ")) {
+        if (hasDetails) {
             String[] split = placeInput.split(" /details ", 2);
             name = split[0].trim();
             details = split.length > 1 ? split[1].trim() : "";
-        } else if (placeInput.contains(" /desc ")) {
+        } else if (hasDesc) {
             String[] split = placeInput.split(" /desc ", 2);
             name = split[0].trim();
             details = split.length > 1 ? split[1].trim() : "";
@@ -177,6 +228,23 @@ public class Parser {
         if (keyword.isEmpty()) {
             throw new DukeException("OOPS!!! The search keyword cannot be empty.");
         }
+        validateNoPipe(keyword, "search keyword");
         return new FindPlaceCommand(keyword);
+    }
+
+    private static void validateNoPipe(String input, String fieldName) throws DukeException {
+        if (input.contains("|")) {
+            throw new DukeException("OOPS!!! The character '|' is reserved and cannot be used in " + fieldName + ".");
+        }
+    }
+
+    private static int countOccurrences(String text, String target) {
+        int count = 0;
+        int idx = 0;
+        while ((idx = text.indexOf(target, idx)) != -1) {
+            count++;
+            idx += target.length();
+        }
+        return count;
     }
 }
