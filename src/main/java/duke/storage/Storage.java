@@ -66,6 +66,12 @@ public class Storage {
     public ArrayList<Task> load() throws DukeException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
         File file = new File(filePath);
+        if (file.exists() && file.isDirectory()) {
+            throw new DukeException("The specified task data path is a directory, not a file: " + filePath);
+        }
+        if (file.exists() && !file.canRead()) {
+            throw new DukeException("Cannot read task data file (permission denied): " + filePath);
+        }
         if (!file.exists()) {
             return loadedTasks;
         }
@@ -133,8 +139,14 @@ public class Storage {
      */
     public void save(ArrayList<Task> tasks) throws DukeException {
         assert tasks != null : "Tasks list to save must not be null";
+        File file = new File(filePath);
+        if (file.exists() && file.isDirectory()) {
+            throw new DukeException("Cannot save tasks to a directory path: " + filePath);
+        }
+        if (file.exists() && !file.canWrite()) {
+            throw new DukeException("Cannot write to task data file (permission denied): " + filePath);
+        }
         try {
-            File file = new File(filePath);
             File parentDir = file.getParentFile();
             if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
                 throw new DukeException("Failed to create directory: " + parentDir.getAbsolutePath());
@@ -176,6 +188,12 @@ public class Storage {
     public PlaceList loadPlaces() throws DukeException {
         ArrayList<Place> loadedPlaces = new ArrayList<>();
         File file = new File(placeFilePath);
+        if (file.exists() && file.isDirectory()) {
+            throw new DukeException("The specified place data path is a directory, not a file: " + placeFilePath);
+        }
+        if (file.exists() && !file.canRead()) {
+            throw new DukeException("Cannot read place data file (permission denied): " + placeFilePath);
+        }
         if (!file.exists()) {
             this.placeList = new PlaceList(loadedPlaces);
             return this.placeList;
@@ -220,8 +238,14 @@ public class Storage {
      */
     public void savePlaces(PlaceList places) throws DukeException {
         assert places != null : "PlaceList to save must not be null";
+        File file = new File(placeFilePath);
+        if (file.exists() && file.isDirectory()) {
+            throw new DukeException("Cannot save places to a directory path: " + placeFilePath);
+        }
+        if (file.exists() && !file.canWrite()) {
+            throw new DukeException("Cannot write to place data file (permission denied): " + placeFilePath);
+        }
         try {
-            File file = new File(placeFilePath);
             File parentDir = file.getParentFile();
             if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
                 throw new DukeException("Failed to create directory: " + parentDir.getAbsolutePath());
