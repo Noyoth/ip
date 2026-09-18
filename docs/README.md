@@ -41,6 +41,10 @@
    ```bash
    java -jar tbc.jar
    ```
+   > **Note**: To suppress Java 25 native library access warnings in the terminal, run with:
+   > ```bash
+   > java --enable-native-access=javafx.graphics -jar tbc.jar
+   > ```
 5. Type your command into the text box and press **Enter** (or click **Send**) to execute it.
 
 ---
