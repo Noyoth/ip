@@ -26,6 +26,7 @@
   - [Deleting a Place: `deleteplace`](#deleting-a-place-deleteplace)
 - [General Features](#general-features)
   - [Exiting the Application: `bye`](#exiting-the-application-bye)
+  - [Theme Toggle: Dark Mode](#theme-toggle-dark-mode)
   - [Data Persistence](#data-persistence)
 - [Command Summary](#command-summary)
 
@@ -249,6 +250,15 @@ Exits the session and terminates the chatbot application.
   ```text
   Bye bye.
   ```
+
+### Theme Toggle: Dark Mode
+
+Toggles the visual color scheme between light mode and dark mode.
+
+* **Action**: Click the theme toggle button in the top right corner of the window.
+* **Behavior**:
+  * In light mode (default), the button displays **Dark Mode**. Clicking it switches the background, chat bubbles, and text controls to a dark color palette.
+  * In dark mode, the button displays **Light Mode**. Clicking it returns the window to the default light theme.
 
 ### Data Persistence
 
