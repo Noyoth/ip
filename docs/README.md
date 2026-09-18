@@ -34,11 +34,11 @@
 ## Quick Start
 
 1. Ensure that you have **Java 25** installed on your system.
-2. Download the latest `duke.jar` from the releases page.
-3. Place `duke.jar` into an empty working folder.
+2. Download the latest `tbc.jar` from the releases page.
+3. Place `tbc.jar` into an empty working folder.
 4. Open a terminal, navigate to the folder containing the file, and launch the application:
    ```bash
-   java -jar duke.jar
+   java -jar tbc.jar
    ```
 5. Type your command into the text box and press **Enter** (or click **Send**) to execute it.
 
@@ -253,7 +253,7 @@ Exits the session and terminates the chatbot application.
 ### Data Persistence
 
 All tasks and places are automatically saved to local text files after each mutating command:
-* **Tasks**: saved to `./data/duke.txt`
+* **Tasks**: saved to `./data/tbc.txt`
 * **Places**: saved to `./data/places.txt`
 
 Data files are created automatically if they do not exist. Any existing saved records are loaded when the application launches.

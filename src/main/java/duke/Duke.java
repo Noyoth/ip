@@ -20,7 +20,7 @@ public class Duke {
      * Initializes the Duke chatbot using the default storage file path.
      */
     public Duke() {
-        this("./data/duke.txt");
+        this("./data/tbc.txt");
     }
 
     /**
@@ -93,6 +93,6 @@ public class Duke {
      * @param args Command line arguments.
      */
     public static void main(String[] args) {
-        new Duke("./data/duke.txt").run();
+        new Duke("./data/tbc.txt").run();
     }
 }
